@@ -1,0 +1,38 @@
+@import './reset.scss';
+
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('@/assets/fonts/SFUIText-Regular.ttf');
+}
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('@/assets/fonts/SFUIText-Medium.ttf');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('@/assets/fonts/SFUIText-Semibold.ttf');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'SF UI Text';
+  src: url('@/assets/fonts/SFUIText-Bold.ttf');
+  font-weight: 700;
+}
+
+html {
+  background: #fff;
+  font-family: 'SF UI Text', 'Roboto', sans-serif;
+  color: #3F414E;
+}
+
+body {
+  margin-top: 120px;
+}
+
+.container {
+  max-width: 1220px;
+  padding: 0 30px;
+  margin: 0 auto;
+  height: 100%;
+}
