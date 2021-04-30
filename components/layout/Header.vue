@@ -52,9 +52,11 @@ a {
 header.header {
   height: 95px;
   border-bottom: 1px solid #DEE0E4;
+  background: #fff;
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1000;
 }
 
 .header-main {

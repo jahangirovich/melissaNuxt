@@ -1,6 +1,7 @@
 <template>
   <div>
     <layout-header />
+    <layout-top-bar />
     <Nuxt />
     <layout-footer />
   </div>
