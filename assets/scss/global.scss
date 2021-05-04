@@ -40,3 +40,8 @@ body {
 .page-inner {
   min-height: 70vh;
 }
+
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}

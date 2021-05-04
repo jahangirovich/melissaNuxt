@@ -34,9 +34,15 @@ export default {
   height: 240px;
   width: 33%;
   margin-right: 20px;
+  border-radius: 12px;
+  transition: box-shadow .5s;
   img {
     width: 100%;
     height: 240px;
+  }
+  &:hover {
+    box-shadow: 0px 0 7px 2px rgba(48,48,48,0.2);
+    -webkit-box-shadow: 0px 0 7px 2px rgba(48,48,48,0.2);
   }
 }
 h2.category-name {

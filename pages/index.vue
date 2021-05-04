@@ -49,6 +49,21 @@
           />
         </div>
       </section>
+      <section class="discount-products">
+        <h1 class="title">Акционные товары</h1>
+        <div class="products-container">
+          <product-card-vertical
+            v-for="(product, index) in discountProducts"
+            :key="index"
+            :name="product.name"
+            :price="product.price"
+            :oldPrice="product.oldPrice"
+            :discount="product.discount"
+            :productId="product.productId"
+            :isFavorite="product.isFavorite"
+          />
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -105,6 +120,43 @@ export default {
           image: 'category1.png',
           name: 'Для мам и детей'
         }
+      ],
+      discountProducts: [
+        {
+          name: 'Фервекс №8 пак Комплекс',
+          price: 1220,
+          oldPrice: 1220,
+          productId: 1,
+          isFavorite: true,
+          discount: '-20%'
+        },
+        {
+          name: 'Фервекс №8 пак Комплекс',
+          price: 1220,
+          productId: 2,
+          discount: '-20%'
+        },
+        {
+          name: 'Фервекс №8 пак Комплекс',
+          price: 1220,
+          oldPrice: 1220,
+          productId: 3,
+          isFavorite: true,
+        },
+        {
+          name: 'Фервекс №8 пак Комплекс',
+          price: 1220,
+          oldPrice: 1220,
+          productId: 5,
+          isFavorite: true,
+          discount: '-500₸'
+        },
+        {
+          name: 'Фервекс №8 пак Комплекс',
+          price: 1220,
+          oldPrice: 1220,
+          productId: 12,
+        },
       ]
     }
   }
@@ -159,6 +211,18 @@ export default {
   }
   .categories-container {
     display: flex;
+  }
+}
+.discount-products {
+  margin-bottom: 70px;
+  h1.title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  .products-container {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 </style>
