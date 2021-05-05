@@ -1,7 +1,7 @@
 <template>
   <div class="card-vertical">
-    <nuxt-link :to="`/product/${productId}`">
-      <img :src="image" alt="" class="card-photo" />
+    <nuxt-link :to="`/product/${productId}`" tabindex="-1">
+      <img :src="image" :alt="name" class="card-photo" />
     </nuxt-link>
     <nuxt-link :to="`/product/${productId}`" class="product-name">
       {{ name }}
@@ -81,7 +81,7 @@ export default {
   align-items: center;
   flex-direction: column;
   position: relative;
-  margin-right: 12px;
+  margin-right: 14px;
   margin-bottom: 24px;
   .card-photo {
     width: 150px;

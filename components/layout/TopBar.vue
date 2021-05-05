@@ -40,7 +40,9 @@ export default {
 }
 
 .topbar {
+  background: #fff;
   margin-bottom: 30px;
+  padding: 20px 0;
 }
 
 .catalog {

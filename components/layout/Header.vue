@@ -18,7 +18,7 @@
         </nav>
       </div>
       <div class="actions-btn">
-        <nuxt-link class="cabinet" to="/cabinet">
+        <nuxt-link to="/cabinet" class="cabinet">
           <img src="@/assets/icons/user.svg" alt="" class="user-icon">
           <span>Личный кабинет</span>
         </nuxt-link>

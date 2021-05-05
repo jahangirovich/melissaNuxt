@@ -1,7 +1,7 @@
 <template>
   <div class="product-card">
-    <nuxt-link :to="`/product/${productId}`">
-      <img class="product-image" :src="image" alt="">
+    <nuxt-link :to="`/product/${productId}`" tabindex="-1">
+      <img class="product-image" :src="image" :alt="name">
     </nuxt-link>
     <div class="product-data">
       <nuxt-link :to="`/product/${productId}`">
