@@ -39,12 +39,12 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseUrl: 'https://melissa.a-lux.dev/api',
+    credentials: false
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  },
-  server: {
-    host: '0.0.0.0',
   },
 }
