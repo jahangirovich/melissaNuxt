@@ -36,12 +36,12 @@ export default {
 
   mounted() {
     let phoneNumber = new Cleave('.phone_input', {
-      blocks: [2, 3, 3, 2, 2],
-      delimiters: [' (', ') ', '-', '-', '-'],
-      prefix: '+7',
+      prefix: '+7 7',
       noImmediatePrefix: true,
+      phone: true,
+      phoneRegionCode: 'kz',
       onValueChanged: (e) => {
-        this.phone = e.target.rawValue;
+        this.phone = e.target.rawValue.slice(1);
       }
     });
   },
@@ -53,12 +53,17 @@ export default {
       password.test(this.password) ? this.errorPassword = false : this.errorPassword = true;
       return (phone.test(this.phone) && password.test(this.password))
     },
-    removeErrors() {
-
-    },
     auth() {
       if (this.validate()) {
-
+        this.$axios.$post('/login', {
+          phone_number: this.phone,
+          password: this.password,
+        }).then((res) => {
+            this.$cookies.set('auth-token', res.token);
+            this.$router.push(`/cabinet`);
+        }).catch((err) => {
+          this.$router.push(`/verify?user_id=${err.response.data.user_id}&phone=${err.response.data.phone_number}`);
+        })
       }
     }
   }

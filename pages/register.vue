@@ -56,7 +56,7 @@ export default {
       this.name.trim() !== '' ? this.errorName = false : this.errorName = true;
       phone.test(this.phone) ? this.errorPhone = false : this.errorPhone = true;
       password.test(this.password) ? this.errorPassword = false : this.errorPassword = true;
-      return (phone.test(this.phone) && password.test(this.password))
+      return (phone.test(this.phone) && password.test(this.password) && this.name.trim() !== '')
     },
     async auth() {
       if (this.validate()) {
@@ -65,8 +65,7 @@ export default {
           phone_number: this.phone,
           password: this.password,
         }).then((res) => {
-          console.error(res)
-          this.$router.push(`/verify?user_id=${res.user.id}&phone=${res.user.phone_number}`)
+          this.$router.push(`/verify?user_id=${res.user.id}`)
         }).catch((err) => {
           console.error(err)
         })
