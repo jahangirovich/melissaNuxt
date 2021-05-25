@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-login">
     <layout-header />
     <layout-top-bar />
     <Nuxt />
@@ -7,8 +7,8 @@
   </div>
 </template>
 
-<style lang="scss">
-html {
+<style lang="scss" >
+.layout-login {
   background: #F5F5F9;
 }
 </style>

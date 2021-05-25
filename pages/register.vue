@@ -38,6 +38,7 @@ export default {
       errorName: false
     }
   },
+  layout: 'login',
   mounted() {
     let phoneNumber = new Cleave('.phone_input', {
       prefix: '+7 7',
