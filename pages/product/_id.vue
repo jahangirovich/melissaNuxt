@@ -1,9 +1,9 @@
 <template>
   <div class="product-page">
     <div class="container">
-      <layout-breadcrumbs class="product-breadcrumbs"/>
+      <layout-breadcrumbs :crumbs="breadcrumbs" class="product-breadcrumbs"/>
       <div class="page-main">
-        <div class="product-main-info">
+        <section class="product-main-info">
           <slick
             class="slick-container-nav"
             ref="slick"
@@ -39,35 +39,49 @@
             <div class="cart-actions-block">
               <div class="quantity">
                 <div class="minus-btn" @click="removeOne">-</div>
-                <input type="number" name="quantity" id="quantity" min="1" max="999" v-model="quantity" @input="validate" @blur="validate">
+                <input type="number" name="quantity" id="quantity" min="1" max="999" v-model="quantity" @blur="validate">
                 <div class="plus-btn" @click="addOne">+</div>
               </div>
-              <div class="cart-add-btn">
+              <div class="cart-add-btn" :class="{inactive: quantity}" @click="cartClick">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.73193 1.72485H3.03248C3.66041 1.72485 3.97438 1.72485 4.22866 1.83932C4.4528 1.94021 4.64372 2.10263 4.77922 2.30771C4.93295 2.54038 4.98325 2.85029 5.08386 3.47011L5.42319 5.56065M5.42319 5.56065L6.21767 10.4552C6.43892 11.8183 6.54955 12.4998 6.89565 12.9899C7.20033 13.4213 7.62927 13.7496 8.1253 13.9311C8.68878 14.1372 9.37555 14.0659 10.7491 13.9235L19.548 13.0112C20.3213 12.931 20.7079 12.8909 21.0245 12.7709C21.8076 12.4738 22.3995 11.8174 22.6142 11.0078C22.701 10.6805 22.701 10.2918 22.701 9.51442V9.51442C22.701 8.68482 22.701 8.27002 22.6056 7.92776C22.3692 7.07992 21.7196 6.40942 20.8797 6.14632C20.5407 6.04011 20.1261 6.02696 19.2969 6.00066L5.42319 5.56065Z" stroke="#05054B" stroke-width="1.55867" stroke-linecap="round" stroke-linejoin="round"/>
                   <ellipse cx="9.40318" cy="19.8079" rx="2.04576" ry="2.19189" stroke="#05054B" stroke-width="1.55867"/>
                   <ellipse cx="19.121" cy="19.8079" rx="2.04576" ry="2.19189" stroke="#05054B" stroke-width="1.55867"/>
                 </svg>
-                <span>В корзину</span>
+                <span v-if="quantity">Уже в корзине</span>
+                <span v-else>В корзину</span>
               </div>
             </div>
           </div>
-        </div>
-        <div class="product-pharmacological">
+        </section>
+        <section class="product-pharmacological">
           <h1 class="title">Фармакологические свойства</h1>
           <ProductPharmaParamLine
-            :title="'123'"
-            :value="'123214'"
+            v-for="(pharmParam, index) in product.pharmParameters"
+            :key="index"
+            :title="pharmParam.title"
+            :value="pharmParam.value"
           />
-          <ProductPharmaParamLine
-            :title="'123'"
-            :value="'123214'"
-          />
-          <ProductPharmaParamLine
-            :title="'123'"
-            :value="'123214'"
-          />
-        </div>
+        </section>
+        <section class="product-pharmacological-descr">
+          <h1 class="title">Фармакологические свойства</h1>
+          <p>{{ product.pharmDescr }}</p>
+        </section>
+        <section class="analog-list">
+          <h1 class="title">Аналоги</h1>
+          <div class="products-container">
+            <product-card-vertical
+              v-for="(product, index) in analogProducts"
+              :key="index"
+              :name="product.name"
+              :price="product.price"
+              :oldPrice="product.oldPrice"
+              :discount="product.discount"
+              :productId="product.productId"
+              :isFavorite="product.isFavorite"
+            />
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -91,6 +105,7 @@ export default {
         arrows: false,
         waitForAnimate: false,
         asNavFor: '.slick-container-main',
+        focusOnSelect: true,
       },
       mainSlickOptions: {
         asNavFor: '.slick-container-nav',
@@ -100,6 +115,7 @@ export default {
       },
       product: {
         title: 'Фервекс №8 пак Комплекс',
+        id: 1,
         price: 1220,
         stock: 1,
         images: [
@@ -122,11 +138,140 @@ export default {
             title: 'Артикул',
             value: '2548976'
           }
-        ]
-      }
+        ],
+        pharmDescr: `Фармакологические эффекты, обусловленные компонентами, входящими в состав препарата фервекс:
+
+— фенирамина малеат — блокатор Н1-рецепторов, обеспечивает десенсибилизирующее действие, проявляющееся уменьшением выраженности воспалительной реакции слизистых оболочек верхних дыхательных путей (улучшается носовое дыхание, уменьшаются ринорея, чихание и слезотечение);
+
+— парацетамол оказывает жаропонижающее и обезболивающее действие, облегчающие выраженность боли и лихорадки (головная боль, миалгия);
+
+— аскорбиновая кислота компенсирует потребности организма в витамине С.
+
+Парацетамол после приема внутрь быстро и почти полностью всасывается в пищеварительном тракте. Cmax парацетамола в плазме крови достигается через 30–60 мин после приема. Парацетамол быстро распределяется во всех тканях. Концентрации в крови, слюне и плазме крови подобны. Связывание с белками плазмы крови слабое. Парацетамол метаболизируется в печени с образованием соединений с глюкуроновой кислотой и сульфатами. Второстепенный метаболический путь, который катализируется цитохромом P 450, приводит к образованию промежуточного реагента (N-ацетилбензохинонимина), который при нормальных условиях применения быстро обезвреживается восстановленным глутатионом и выводится с мочой после конъюгации с цистеином и меркаптуровой кислотой.`,
+        pharmParameters: [
+          {
+            title: 'Торговое название',
+            value: 'Фервекс',
+          },
+          {
+            title: 'Действующие вещества',
+            value: 'Кислота аскорбиновая, Парацетамол, Фенирамин',
+          },
+          {
+            title: 'Форма выпуска',
+            value: 'Порошок',
+          },
+          {
+            title: 'Способ введения',
+            value: 'Внутрь',
+          },
+          {
+            title: 'Вид упаковки',
+            value: 'Пакет',
+          },  
+          {
+            title: 'Количество в упаковке',
+            value: '8 пакетиков',
+          },
+          {
+            title: 'Взаимодействие с едой',
+            value: 'Не имеет значения',
+          },
+          {
+            title: 'Чувствительность к свету',
+            value: 'Не чувствительный',
+          },
+          {
+            title: 'Условия отпуска',
+            value: 'Без рецепта',
+          },
+          {
+            title: 'Срок годности',
+            value: '3 года',
+          },
+          {
+            title: 'Температура хранения',
+            value: 'от 5°C до 25°C',
+          },
+          {
+            title: 'Производитель',
+            value: 'УПСА САС',
+          },
+          {
+            title: 'Страна производства',
+            value: 'Франция',
+          },
+        ],
+        category: {
+          id: 1,
+          title: 'Лекарственные средства'
+        }
+      },
+      analogProducts: [
+        {
+          name: "Фервекс №8 пак Комплекс",
+          price: 1220,
+          oldPrice: 1220,
+          productId: 1,
+          isFavorite: true,
+          discount: "-20%"
+        },
+        {
+          name: "Фервекс №8 пак Комплекс",
+          price: 1220,
+          productId: 2,
+          discount: "-20%"
+        },
+        {
+          name: "Фервекс №8 пак Комплекс",
+          price: 1220,
+          oldPrice: 1220,
+          productId: 3,
+          isFavorite: true
+        },
+        {
+          name: "Фервекс №8 пак Комплекс",
+          price: 1220,
+          oldPrice: 1220,
+          productId: 5,
+          isFavorite: true,
+          discount: "-500₸"
+        },
+        {
+          name: "Фервекс №8 пак Комплекс",
+          price: 1220,
+          oldPrice: 1220,
+          productId: 12
+        }
+      ],
+    }
+  },
+  computed: {
+    breadcrumbs() {
+      return [
+        {
+          title: 'Главная',
+          url: '/'
+        },
+        {
+          title: 'Каталог',
+          url: '/catalog'
+        },
+        {
+          title: this.product.category.title,
+          url: '/catalog?category=' + this.product.category.id
+        },
+        {
+          title: this.product.title,
+          url: '/product' + this.product.id
+        }
+      ]
     }
   },
   methods: {
+    cartClick() {
+      this.quantity || this.addOne();
+    },
     addOne() {
       this.quantity++;
       this.validate();
@@ -211,6 +356,9 @@ export default {
   margin-top: 30px;
   align-items: center;
   justify-content: space-between;
+  &.flex-end {
+    justify-content: flex-end;
+  }
   .quantity {
     display: flex;
     border: 2px solid #DEE0E4;
@@ -262,6 +410,19 @@ export default {
     font-weight: 600;
     cursor: pointer;
     transition: background-color .3s, color .3s;
+    &.inactive {
+      color: #9e9e9e;
+      background: #e2e2e2;
+      border-color: #9e9e9e;
+      cursor: default;
+      svg {
+        display: none;
+      }
+      &:hover {
+        color: #9e9e9e;
+        background: #e2e2e2;
+      }
+    }
     svg {
       width: 18px;
       height: 18px;
@@ -284,11 +445,35 @@ export default {
 
 .product-pharmacological {
   margin-top: 60px;
-  width: 50%;
+  margin-bottom: 60px;
+  width: 65%;
   h1.title {
     font-weight: 700;
     font-size: 28px;
     margin-bottom: 28px;
+  }
+}
+
+.product-pharmacological-descr {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  width: 100%;
+  h1.title {
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 28px;
+  }
+}
+
+.analog-list {
+  h1.title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  .products-container {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 </style>
@@ -298,6 +483,10 @@ export default {
 .slick-container-nav {
   width: 75px;
   margin-right: 30px;
+
+  .slick-list {
+    min-height: 300px;
+  }
 }
 
 .slick-container-main {

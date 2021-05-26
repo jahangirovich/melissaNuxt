@@ -1,7 +1,7 @@
 <template>
   <dl class="param-line">
     <dt><span>{{ title }}</span></dt>
-    <dd>{{ value }}</dd>
+    <dd>{{ value.length >= 48 ? value.slice(0, 45) + '...' : value }}</dd>
   </dl>
 </template>
 
@@ -45,7 +45,7 @@ export default {
       position: absolute;
       left: 100%;
       bottom: 2px;
-      width: 550px;
+      width: 700px;
       border-bottom: 1px dotted #A1A4B2;
     }
   }

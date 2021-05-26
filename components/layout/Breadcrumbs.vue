@@ -20,26 +20,20 @@
 <script>
 export default {
   data() {
-    return {
-      crumbs: [
-        {
-          title: 'Главная',
-          url: '/'
-        },
-        {
-          title: 'Каталог',
-          url: '/catalog/'
-        },
-        {
-          title: 'Лекарственные средства',
-          url: '/catalog/?category=1'
-        },
-        {
-          title: 'Фервекс №8 пак Комплекс',
-          url: '/product/1'
-        }
-      ]
-    }
+    return {}
+  },
+  props: {
+    crumbs: {
+      type: Array,
+      default() {
+        return [
+          {
+            title: 'Главная',
+            url: '/'
+          }
+        ]
+      }
+    },
   }
 }
 </script>

@@ -15,10 +15,10 @@
           <a href="tel:+77272910888">+7 (727) 291 08 88</a>
         </div>
       </div>
-      <div class="cart">
+      <nuxt-link to="/cart" class="cart">
         <img src="@/assets/icons/cart.svg" alt="">
         <div class="cart-counter">{{cartCount}}</div>
-      </div>
+      </nuxt-link>
     </div>
   </div>
 </template>
