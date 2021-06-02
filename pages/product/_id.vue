@@ -42,14 +42,20 @@
                 <input type="number" name="quantity" id="quantity" min="1" max="999" v-model="quantity" @blur="validate">
                 <div class="plus-btn" @click="addOne">+</div>
               </div>
-              <div class="cart-add-btn" :class="{inactive: quantity}" @click="cartClick">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.73193 1.72485H3.03248C3.66041 1.72485 3.97438 1.72485 4.22866 1.83932C4.4528 1.94021 4.64372 2.10263 4.77922 2.30771C4.93295 2.54038 4.98325 2.85029 5.08386 3.47011L5.42319 5.56065M5.42319 5.56065L6.21767 10.4552C6.43892 11.8183 6.54955 12.4998 6.89565 12.9899C7.20033 13.4213 7.62927 13.7496 8.1253 13.9311C8.68878 14.1372 9.37555 14.0659 10.7491 13.9235L19.548 13.0112C20.3213 12.931 20.7079 12.8909 21.0245 12.7709C21.8076 12.4738 22.3995 11.8174 22.6142 11.0078C22.701 10.6805 22.701 10.2918 22.701 9.51442V9.51442C22.701 8.68482 22.701 8.27002 22.6056 7.92776C22.3692 7.07992 21.7196 6.40942 20.8797 6.14632C20.5407 6.04011 20.1261 6.02696 19.2969 6.00066L5.42319 5.56065Z" stroke="#05054B" stroke-width="1.55867" stroke-linecap="round" stroke-linejoin="round"/>
-                  <ellipse cx="9.40318" cy="19.8079" rx="2.04576" ry="2.19189" stroke="#05054B" stroke-width="1.55867"/>
-                  <ellipse cx="19.121" cy="19.8079" rx="2.04576" ry="2.19189" stroke="#05054B" stroke-width="1.55867"/>
+              <div class="cart-actions">
+                <svg width="24" height="24" @click="removeAll" v-if="quantity" class="cart-deleteall" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.33533 13.3333C3.33533 14.0687 3.93333 14.6667 4.66867 14.6667H11.3353C12.0707 14.6667 12.6687 14.0687 12.6687 13.3333V5.33333H14.002V4H11.3353V2.66667C11.3353 1.93133 10.7373 1.33333 10.002 1.33333H6.002C5.26667 1.33333 4.66867 1.93133 4.66867 2.66667V4H2.002V5.33333H3.33533V13.3333ZM6.002 2.66667H10.002V4H6.002V2.66667ZM5.33533 5.33333H11.3353L11.336 13.3333H4.66867V5.33333H5.33533Z" fill="#F94949"/>
+                  <path d="M6.002 6.66667H7.33533V12H6.002V6.66667ZM8.66867 6.66667H10.002V12H8.66867V6.66667Z" fill="#F94949"/>
                 </svg>
-                <span v-if="quantity">Уже в корзине</span>
-                <span v-else>В корзину</span>
+                <div class="cart-add-btn" :class="{inactive: quantity}" @click="cartClick">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.73193 1.72485H3.03248C3.66041 1.72485 3.97438 1.72485 4.22866 1.83932C4.4528 1.94021 4.64372 2.10263 4.77922 2.30771C4.93295 2.54038 4.98325 2.85029 5.08386 3.47011L5.42319 5.56065M5.42319 5.56065L6.21767 10.4552C6.43892 11.8183 6.54955 12.4998 6.89565 12.9899C7.20033 13.4213 7.62927 13.7496 8.1253 13.9311C8.68878 14.1372 9.37555 14.0659 10.7491 13.9235L19.548 13.0112C20.3213 12.931 20.7079 12.8909 21.0245 12.7709C21.8076 12.4738 22.3995 11.8174 22.6142 11.0078C22.701 10.6805 22.701 10.2918 22.701 9.51442V9.51442C22.701 8.68482 22.701 8.27002 22.6056 7.92776C22.3692 7.07992 21.7196 6.40942 20.8797 6.14632C20.5407 6.04011 20.1261 6.02696 19.2969 6.00066L5.42319 5.56065Z" stroke="#05054B" stroke-width="1.55867" stroke-linecap="round" stroke-linejoin="round"/>
+                    <ellipse cx="9.40318" cy="19.8079" rx="2.04576" ry="2.19189" stroke="#05054B" stroke-width="1.55867"/>
+                    <ellipse cx="19.121" cy="19.8079" rx="2.04576" ry="2.19189" stroke="#05054B" stroke-width="1.55867"/>
+                  </svg>
+                  <span v-if="quantity">Уже в корзине</span>
+                  <span v-else>В корзину</span>
+                </div>
               </div>
             </div>
           </div>
@@ -280,6 +286,9 @@ export default {
       this.quantity--;
       this.validate();
     },
+    removeAll() {
+      this.quantity = 0;
+    },
     validate() {
       this.quantity = +this.quantity;
       if(this.quantity > 999) {
@@ -474,6 +483,15 @@ export default {
   .products-container {
     display: flex;
     flex-wrap: wrap;
+  }
+}
+
+.cart-actions {
+  display: flex;
+  align-items: center;
+  .cart-deleteall {
+    margin-right: 12px;
+    cursor: pointer;
   }
 }
 </style>

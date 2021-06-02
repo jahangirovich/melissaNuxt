@@ -85,7 +85,7 @@ export default {
   align-items: center;
   flex-direction: column;
   position: relative;
-  margin-right: 14px;
+  margin-right: 12px;
   margin-bottom: 24px;
   .card-photo {
     width: 150px;

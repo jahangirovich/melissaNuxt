@@ -50,6 +50,11 @@ export default {
       }
     });
   },
+  middleware({ $cookies, redirect }) {
+    if($cookies.get('auth-token')) {
+      redirect('/cabinet')
+    }
+  },
   methods: {
     validate() {
       const phone = /^\+?77([0124567][0-8]\d{7})$/;

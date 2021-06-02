@@ -23,8 +23,10 @@
           <span>Личный кабинет</span>
         </nuxt-link>
         <div class="lang-picker">
-          <span>Ru</span>
-          <img src="@/assets/icons/chevron-down.svg" alt="">
+          <div class="picker-main">
+            <span>Ru</span>
+            <img src="@/assets/icons/chevron-down.svg" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -83,6 +85,7 @@ header.header {
 
 .actions-btn {
   display: flex;
+  align-items: center;
   .cabinet {
     display: flex;
     align-items: center;
@@ -95,9 +98,11 @@ header.header {
     }
   }
   .lang-picker {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+    .picker-main {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
     img {
       margin-left: 6px;
     }

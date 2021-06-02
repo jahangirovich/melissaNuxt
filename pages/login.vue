@@ -1,6 +1,7 @@
 <template>
   <div class="login-form">
     <h1 class="form-title">Вход</h1>
+    <h2 class="error-title" v-if="error">{{error}}</h2>
     <label for="phone" id="phone-label" :class="{'has-error': errorPhone}">
       <span>Мобильный телефон</span>
       <span class="error-text" v-if="errorPhone">Проверьте правильность введенного номера</span>
@@ -30,12 +31,17 @@ export default {
       phone: '',
       password: '',
       errorPhone: false,
-      errorPassword: false
+      errorPassword: false,
+      error: null
     }
   },
 
   layout: 'login',
-
+  middleware({ $cookies, redirect }) {
+    if($cookies.get('auth-token')) {
+      redirect('/cabinet')
+    }
+  },
   mounted() {
     let phoneNumber = new Cleave('.phone_input', {
       prefix: '+7 7',
@@ -57,6 +63,7 @@ export default {
     },
     auth() {
       if (this.validate()) {
+        this.error = null;
         this.$axios.$post('/login', {
           phone_number: this.phone,
           password: this.password,
@@ -64,7 +71,12 @@ export default {
             this.$cookies.set('auth-token', res.token);
             this.$router.push(`/cabinet`);
         }).catch((err) => {
-          this.$router.push(`/verify?user_id=${err.response.data.user_id}&phone=${err.response.data.phone_number}`);
+          // this.$router.push(`/verify?user_id=${err.response.data.user_id}&phone=${err.response.data.phone_number}`);
+          if (err.response.status == 422 || err.response.status == 418) {
+            this.error = "Неверный номер телефона или пароль";
+          } else {
+            this.error = "Ошибка сервера, попробуйте позже";
+          }
         })
       }
     }
@@ -90,6 +102,11 @@ export default {
     font-weight: 700;
     text-align: center;
     margin-bottom: 20px;
+  }
+  h2.error-title {
+    color: #ff2626;
+    text-align: center;
+    margin-bottom: 12px;
   }
   label {
     display: flex;
