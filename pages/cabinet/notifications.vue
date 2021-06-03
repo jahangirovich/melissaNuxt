@@ -7,7 +7,7 @@
       />
       <h1 class="title">Личный кабинет</h1>
       <div class="cabinet-main">
-        <aside></aside>
+        <cabinet-aside />
         <main></main>
       </div>
     </div>

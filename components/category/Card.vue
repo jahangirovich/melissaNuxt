@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link class="category-card" :to="`/category/${categoryId}`">
+  <nuxt-link class="category-card" :to="`/catalog?category=${categoryId}`">
     <img :src="require(`@/assets/img/${image}`)" :alt="name">
     <!-- При прикручивании бэкенда require заменить на ссылку -->
     <h2 class="category-name">

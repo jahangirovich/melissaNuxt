@@ -9,7 +9,7 @@
           <aside class="catalog-aside">
             <div class="categories-block">
               <div class="category" v-for="(cat, index) in categories" :key="index" :class="{active: $route.query.category == cat.id}">
-                <span>{{cat.title}}</span>
+                <span @click="$router.push({query: {category: cat.id}})">{{cat.title}}</span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                  <path d="M2 4L6 8L10 4" stroke="#3BDE15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -85,10 +85,10 @@ import 'vue-range-component/dist/vue-range-slider.css';
 export default {
   data() {
     return {
-      category: {
-        id: 1,
-        title: 'Лекарственные средства',
-      },
+      // category: {
+      //   id: 1,
+      //   title: 'Лекарственные средства',
+      // },
       categories: [
         {
           id: 1,
@@ -172,6 +172,10 @@ export default {
         crumbs.push({title: this.category.title, url: '/catalog?category=' + this.category.id})
       }
       return crumbs;
+    },
+    category() {
+      console.log(this.categories.filter(cat => cat == cat))
+      return this.categories.filter(cat => cat.id == this.$route.query.category)[0];
     }
   },
 }
@@ -214,8 +218,19 @@ aside {
     font-size: 14px;
     justify-content: space-between;
     align-items: center;
+    span {
+      cursor: pointer;
+    }
+    svg {
+      cursor: pointer;
+      transform: none;
+      transition: transform .3s;
+    }
     &.active {
       color: #3BDE15;
+      svg {
+        transform: rotate(180deg);
+      }
     }
     &:last-child {
       margin-bottom: 0;
