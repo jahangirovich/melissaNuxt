@@ -57,8 +57,9 @@ a {
   border-radius: 6px;
   padding: 24px 36px;
   width: 860px;
-  &:not(:last-child) {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
+  &:last-child {
+    margin-bottom: 60px;
   }
   h2.block-title {
     font-weight: 700;

@@ -3,13 +3,13 @@
     <div class="container">
       <layout-breadcrumbs :crumbs="breadcrumbs" class="product-breadcrumbs" />
       <div class="page-main">
-        <h1 class="title" v-if="category">{{ category.title }}</h1>
+        <h1 class="title" v-if="category">{{ category.name }}</h1>
         <h1 class="title" v-else>Каталог</h1>
         <div class="page-content">
           <aside class="catalog-aside">
             <div class="categories-block">
               <div class="category" v-for="(cat, index) in categories" :key="index" :class="{active: $route.query.category == cat.id}">
-                <span @click="$router.push({query: {category: cat.id}})">{{cat.title}}</span>
+                <span @click="$router.push({query: {category: cat.id}})">{{cat.name}}</span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                  <path d="M2 4L6 8L10 4" stroke="#3BDE15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -85,32 +85,7 @@ import 'vue-range-component/dist/vue-range-slider.css';
 export default {
   data() {
     return {
-      // category: {
-      //   id: 1,
-      //   title: 'Лекарственные средства',
-      // },
-      categories: [
-        {
-          id: 1,
-          title: 'Лекарственные средства'
-        },
-        {
-          id: 2,
-          title: 'Витамины и БАДы'
-        },
-        {
-          id: 3,
-          title: 'Изделия мед. назначения'
-        },
-        {
-          id: 4,
-          title: 'Мать и дитя'
-        },
-        {
-          id: 5,
-          title: 'Красота и гигиена'
-        }
-      ],
+      categories: [],
       price: {
         range: [0, 500],
         min: 0,
@@ -174,10 +149,14 @@ export default {
       return crumbs;
     },
     category() {
-      console.log(this.categories.filter(cat => cat == cat))
-      return this.categories.filter(cat => cat.id == this.$route.query.category)[0];
+      return this.categories?.filter(cat => cat.id == this.$route.query.category)[0];
     }
   },
+  beforeMount() {
+    this.$axios.$get('catalogs-subCatalogs').then(res => {
+      this.categories = res.data.catalogs;
+    })
+  }
 }
 </script>
 

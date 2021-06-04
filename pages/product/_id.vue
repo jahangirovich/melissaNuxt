@@ -96,6 +96,7 @@
 <script>
 import Slick from 'vue-slick';
 import 'slick-carousel/slick/slick.css';
+import {mapMutations, mapState} from 'vuex';
 
 export default {
   components: {
@@ -103,7 +104,6 @@ export default {
   },
   data() {
     return {
-      quantity: 0,
       navSlickOptions: {
         vertical: true,
         verticalSwiping: true,
@@ -253,6 +253,16 @@ export default {
     }
   },
   computed: {
+    ...mapState('cart', ['products']),
+    quantity: {
+      get() {
+        let storeProduct = this.products.filter(product => product.id == this.productId);
+        return storeProduct.length ? storeProduct[0].count : 0;
+      },
+      set(newQuantity) {
+        this.setProduct({productId: +this.productId, count: newQuantity});
+      }
+    },
     breadcrumbs() {
       return [
         {
@@ -272,9 +282,15 @@ export default {
           url: '/product' + this.product.id
         }
       ]
-    }
+    },
+    productId() {
+      return this.$route.params.id;
+    },
   },
   methods: {
+    ...mapMutations({
+      setProduct: 'cart/setProduct'
+    }),
     cartClick() {
       this.quantity || this.addOne();
     },
@@ -288,6 +304,7 @@ export default {
     },
     removeAll() {
       this.quantity = 0;
+      this.validate();
     },
     validate() {
       this.quantity = +this.quantity;
@@ -296,6 +313,7 @@ export default {
       }else if(this.quantity < 0) {
         this.quantity = 0;
       }
+      this.setProduct({productId: +this.productId, count: this.quantity});
     }
   }
 }

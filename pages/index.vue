@@ -219,6 +219,9 @@ export default {
       }
     }
     &s-small {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       width: 30%;
     }
   }
