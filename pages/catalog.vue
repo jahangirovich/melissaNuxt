@@ -9,7 +9,7 @@
           <aside class="catalog-aside">
             <div class="categories-block">
               <div class="category" v-for="(cat, index) in categories" :key="index" :class="{active: $route.query.category == cat.id}">
-                <span @click="$router.push({query: {category: cat.id}})">{{cat.name}}</span>
+                <span @click="changeCategory(cat.id)">{{cat.name}}</span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                  <path d="M2 4L6 8L10 4" stroke="#3BDE15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -65,12 +65,13 @@
               <product-card-vertical
                 v-for="(product, index) in products"
                 :key="index"
-                :name="product.name"
-                :price="product.price"
-                :oldPrice="product.oldPrice"
-                :discount="product.discount"
-                :productId="product.productId"
-                :isFavorite="product.isFavorite"
+                :name="product.full_name"
+                :price="+product.price"
+                :oldPrice="product.oldPrice || null"
+                :discount="product.discount || null"
+                :productId="product.id"
+                :isFavorite="product.isFavorite || null"
+                :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
               />
             </div>
           </main>
@@ -91,43 +92,7 @@ export default {
         min: 0,
         max: 500,
       },
-      products: [
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 1,
-          isFavorite: true,
-          discount: "-20%"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          productId: 2,
-          discount: "-20%"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 3,
-          isFavorite: true
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 5,
-          isFavorite: true,
-          discount: "-500₸"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 12
-        }
-      ],
+      products: [],
       page: this.$route.query.page ? +this.$route.query.page : 1,
     }
   },
@@ -144,18 +109,46 @@ export default {
         },
       ]
       if (this.category?.id) {
-        crumbs.push({title: this.category.title, url: '/catalog?category=' + this.category.id})
+        crumbs.push({title: this.category.name, url: '/catalog?category=' + this.category.id})
       }
       return crumbs;
     },
     category() {
       return this.categories?.filter(cat => cat.id == this.$route.query.category)[0];
-    }
+    },
   },
   beforeMount() {
     this.$axios.$get('catalogs-subCatalogs').then(res => {
-      this.categories = res.data.catalogs;
-    })
+      this.categories = res.catalogs;
+    });
+    if(this.$route.query?.category) {
+      this.updateProducts(this.$route.query.category);
+    } else {
+      this.updateProducts(0);
+    }
+  },
+  methods: {
+    updateProducts(catalogId) {
+      if(!catalogId) {
+        this.$axios.$get('welcome').then(res => {
+          console.log(res.items.data)
+          this.products = res.items.data;
+        }).catch(err => {
+          console.error(err);
+        });
+      } else {
+        this.$axios.$get(`catalog/${catalogId}`).then(res => {
+          console.log(res.catalog.sub_catalog_items)
+          this.products = res.catalog.sub_catalog_items;
+        }).catch(err => {
+          console.error(err);
+        });
+      }
+    },
+    changeCategory(categoryId) {
+      this.$router.push({query: {category: categoryId}});
+      this.updateProducts(categoryId);
+    }
   }
 }
 </script>
@@ -207,9 +200,9 @@ aside {
     }
     &.active {
       color: #3BDE15;
-      svg {
-        transform: rotate(180deg);
-      }
+      // svg {
+      //   transform: rotate(180deg);
+      // }
     }
     &:last-child {
       margin-bottom: 0;

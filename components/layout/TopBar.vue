@@ -17,17 +17,27 @@
       </div>
       <nuxt-link to="/cart" class="cart">
         <img src="@/assets/icons/cart.svg" alt="">
-        <div class="cart-counter">{{cartCount}}</div>
+        <div v-if="productCount" class="cart-counter">{{ productCount }}</div>
       </nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
       cartCount: 3,
+    }
+  },
+  computed: {
+    ...mapState('cart', ['products']),
+    productCount() {
+      let count = 0;
+      this.products.forEach(product => { count += product.count })
+      return count;
     }
   }
 }

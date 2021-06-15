@@ -17,10 +17,10 @@
           <div class="table-data-line" v-for="(cartItem, index) in cartItems" :key="index">
             <img class="image" :src="`https://melissa.a-lux.dev/storage/${JSON.parse(cartItem.images)[0]}`">
             <div class="title">{{ cartItem.full_name }}</div>
-            <div class="count centered">{{ products.filter(product => product.id == cartItem.id)[0].count }}</div>
+            <div class="count centered">{{ products.filter(product => product.id == cartItem.id)[0] ? products.filter(product => product.id == cartItem.id)[0].count : null }}</div>
             <div class="price centered">{{ cartItem.price }}</div>
-            <div class="total centered">{{ cartItem.price * products.filter(product => product.id == cartItem.id)[0].count }}</div>
-            <div class="remove"></div>
+            <div class="total centered">{{ cartItem.price * (products.filter(product => product.id == cartItem.id)[0] ? products.filter(product => product.id == cartItem.id)[0].count : 0) }}</div>
+            <div class="remove"><img src="~/assets/icons/delete.svg" alt="Удалить из корзины" @click="cartRemove(cartItem.id)"></div>
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import {mapState, mapMutations} from 'vuex';
 
 export default {
   data() {
@@ -44,7 +44,7 @@ export default {
           url: '/cart'
         }
       ],
-      cartItems: null,
+      cartItems: [],
     }
   },
   computed: {
@@ -60,6 +60,16 @@ export default {
     }).catch(err => {
       console.error(err);
     });
+  },
+  methods: {
+    ...mapMutations({
+      setProduct: 'cart/setProduct'
+    }),
+    cartRemove(id) {
+      this.setProduct({productId: id, count: 0});
+      const target = this.cartItems.filter(item => item.id = id)[0];
+      this.cartItems.splice(this.cartItems.indexOf(target), 1);
+    }
   }
 }
 </script>
@@ -96,6 +106,11 @@ export default {
       justify-content: flex-start;
       font-size: 16px;
     }
+    &.remove img {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
   }
   img.image {
     width: 73px;
@@ -104,6 +119,9 @@ export default {
   }
   .centered {
     text-align: center;
+  }
+  &:last-child {
+    margin-bottom: 60px;
   }
 }
 </style>
