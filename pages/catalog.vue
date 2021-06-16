@@ -114,15 +114,15 @@ export default {
       return crumbs;
     },
     category() {
-      return this.categories?.filter(cat => cat.id == this.$route.query.category)[0];
+      return this.categories?.find(cat => cat.id == this.$route.query.category) || false;
     },
   },
-  beforeMount() {
-    this.$axios.$get('catalogs-subCatalogs').then(res => {
+  async beforeMount() {
+    await this.$axios.$get('catalogs-subCatalogs').then(res => {
       this.categories = res.catalogs;
     });
-    if(this.$route.query?.category) {
-      this.updateProducts(this.$route.query.category);
+    if(this.category) {
+      this.updateProducts(this.category.id);
     } else {
       this.updateProducts(0);
     }
@@ -131,14 +131,12 @@ export default {
     updateProducts(catalogId) {
       if(!catalogId) {
         this.$axios.$get('welcome').then(res => {
-          console.log(res.items.data)
           this.products = res.items.data;
         }).catch(err => {
           console.error(err);
         });
       } else {
         this.$axios.$get(`catalog/${catalogId}`).then(res => {
-          console.log(res.catalog.sub_catalog_items)
           this.products = res.catalog.sub_catalog_items;
         }).catch(err => {
           console.error(err);
@@ -148,6 +146,15 @@ export default {
     changeCategory(categoryId) {
       this.$router.push({query: {category: categoryId}});
       this.updateProducts(categoryId);
+    }
+  },
+  watch: {
+    category() {
+      if (this.category) {
+        this.updateProducts(this.category.id);
+      } else {
+        this.updateProducts(0);
+      }
     }
   }
 }

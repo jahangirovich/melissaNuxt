@@ -19,20 +19,22 @@
         <div class="products-popular">
           <div class="products-grid">
             <product-card-horizontal
-              v-for="(product, index) in products.slice(0, 4)"
+              v-for="(product, index) in (popularProducts.length ? popularProducts.slice(0, 4) : [])"
               :key="index"
-              :name="product.name"
-              :price="product.price"
-              :productId="product.productId"
+              :name="product.full_name"
+              :price="+product.price"
+              :productId="+product.id"
+              :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
             />
           </div>
           <div class="product-big">
             <product-big-card
-              v-for="(product, index) in products.slice(4, 5)"
+              v-for="(product, index) in (popularProducts.length ? popularProducts.slice(4, 5) : [])"
               :key="index"
-              :name="product.name"
-              :price="product.price"
-              :productId="product.productId"
+              :name="product.full_name"
+              :price="+product.price"
+              :productId="+product.id"
+              :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
             />
           </div>
         </div>
@@ -55,12 +57,13 @@
           <product-card-vertical
             v-for="(product, index) in discountProducts"
             :key="index"
-            :name="product.name"
-            :price="product.price"
-            :oldPrice="product.oldPrice"
-            :discount="product.discount"
-            :productId="product.productId"
-            :isFavorite="product.isFavorite"
+            :name="product.full_name"
+            :price="+product.price"
+            :oldPrice="product.oldPrice || null"
+            :discount="product.discount || null"
+            :productId="product.id"
+            :isFavorite="product.isFavorite || null"
+            :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
           />
         </div>
         <nuxt-link class="all-products-btn" to="/catalog">
@@ -112,33 +115,6 @@ export default {
         require("@/assets/img/banner-secondary1.png"),
         require("@/assets/img/banner-secondary2.png")
       ],
-      products: [
-        {
-          productId: 1,
-          name: "Фервекс для взрослых (с витамином С) саше №8",
-          price: 1220
-        },
-        {
-          productId: 2,
-          name: "Фервекс для взрослых (с витамином С) саше №8",
-          price: 1220
-        },
-        {
-          productId: 3,
-          name: "Фервекс для взрослых (с витамином С) саше №8",
-          price: 1220
-        },
-        {
-          productId: 4,
-          name: "Фервекс для взрослых (с витамином С) саше №8",
-          price: 1220
-        },
-        {
-          productId: 5,
-          name: "Фервекс для взрослых (с витамином С) саше №8",
-          price: 1220
-        }
-      ],
       categories: [
         {
           categoryId: 1,
@@ -156,44 +132,17 @@ export default {
           name: "Для мам и детей"
         }
       ],
-      discountProducts: [
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 1,
-          isFavorite: true,
-          discount: "-20%"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          productId: 2,
-          discount: "-20%"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 3,
-          isFavorite: true
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 5,
-          isFavorite: true,
-          discount: "-500₸"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 12
-        }
-      ]
+      discountProducts: [],
+      popularProducts: [],
     };
+  },
+  beforeMount() {
+    this.$axios.$get('welcome').then(res => {
+      this.popularProducts = res.items.data;
+      this.discountProducts = res.items.data;
+    }).catch(err => {
+      console.error(err);
+    });
   },
 };
 </script>

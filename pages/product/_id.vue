@@ -9,20 +9,20 @@
             ref="slick"
             :options="navSlickOptions"
           >
-            <img class="slide" v-for="(image, index) in product.images" :key="index" :src="image" alt="">
+            <img class="slide" v-for="(image, index) in JSON.parse(productData.images)" :key="index" :src="`https://melissa.a-lux.dev/storage/${image}`" alt="">
           </slick>
           <slick
             class="slick-container-main"
             ref="slick"
             :options="mainSlickOptions"
           >
-            <div class="slide" v-for="(image, index) in product.images" :key="index">
-              <img :src="image" alt="">
+            <div class="slide" v-for="(image, index) in JSON.parse(productData.images)" :key="index">
+              <img :src="`https://melissa.a-lux.dev/storage/${image}`" alt="">
             </div>
           </slick>
           <div class="info-block">
-            <h1 class="title">{{product.title}}</h1>
-            <h2 class="price">{{ Intl.NumberFormat("ru-RU").format(product.price) + " ₸" }}</h2>
+            <h1 class="title">{{productData.full_name}}</h1>
+            <h2 class="price">{{ Intl.NumberFormat("ru-RU").format(+productData.price) + " ₸" }}</h2>
             <div class="stock" :class="{'instock': product.stock, 'notinstock': !product.stock}">
               <img src="~/assets/icons/in-stock.svg" alt="" v-if="product.stock">
               <img src="~/assets/icons/not-in-stock.svg" alt="" v-else>
@@ -252,6 +252,11 @@ export default {
       ],
     }
   },
+  async asyncData({ $axios, params }) {
+    const productData = await $axios.$get(`https://melissa.a-lux.dev/api/items/${params.id}`);
+    console.log(productData);
+    return { productData };
+  },
   computed: {
     ...mapState('cart', ['products']),
     quantity: {
@@ -278,8 +283,8 @@ export default {
           url: '/catalog?category=' + this.product.category.id
         },
         {
-          title: this.product.title,
-          url: '/product' + this.product.id
+          title: this.productData.full_name,
+          url: '/product' + this.productData.id
         }
       ]
     },

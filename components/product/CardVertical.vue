@@ -115,6 +115,7 @@ export default {
   .product-name {
     display: block;
     width: 90%;
+    height: 2rem;
     text-align: center;
     text-decoration: none;
     color: #3f414e;
