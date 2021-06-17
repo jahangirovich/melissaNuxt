@@ -8,7 +8,7 @@
       <h1 class="title">Личный кабинет</h1>
       <div class="cabinet-main">
         <cabinet-aside />
-        <cabinet-user-data />
+        <cabinet-user-data :userData="userData"/>
       </div>
     </div>
   </div>
@@ -34,6 +34,12 @@ export default {
         }
       ]
     }
+  },
+  async asyncData({ $axios, $cookies }) {
+    $axios.setHeader('Authorization', `Bearer ${$cookies.get('auth-token')}`)
+    const userData = await $axios.$get('/profile');
+    console.log(userData);
+    return { userData }
   }
 }
 </script>

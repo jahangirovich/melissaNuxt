@@ -2,39 +2,68 @@
   <main class="user-data">
     <div class="private-info cabinet-block">
       <h2 class="block-title">Личная информация</h2>
-      <div class="block-inner">
+      <div class="block-inner" v-if="!privateEdit">
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">ФИО</div>
-            <div class="user-data-text">{{user.fullName}}</div>
+            <div class="user-data-text">{{ userData.user.name }}</div>
           </div>
           <div class="user-dataline">
             <div class="user-data-label">Телефон</div>
-            <div class="user-data-text">{{user.phoneNumber}}</div>
+            <div class="user-data-text">{{'+' + userData.user.phone_number }}</div>
           </div>
         </div>
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">Дата рождения</div>
-            <div class="user-data-text">{{user.birthDay}}</div>
+            <div class="user-data-text">{{ userData.user.bDay || 'Не указана' }}</div>
           </div>
           <div class="user-dataline">
             <div class="user-data-label">Почта</div>
-            <div class="user-data-text">{{user.email}}</div>
+            <div class="user-data-text">{{ userData.user.email || 'Не указана' }}</div>
           </div>
         </div>
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">Пол</div>
-            <div class="user-data-text">{{user.isMale ? 'Мужской' : 'Женский' }}</div>
+            <div class="user-data-text">{{ userData.user.sex == 1 ? 'Мужской' : 'Женский' }}</div>
           </div>
         </div>
       </div>
-      <svg class="block-edit" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div class="block-inner editing" v-else>
+        <div class="inner-column-30">
+          <div class="user-dataline">
+            <div class="user-data-label">ФИО</div>
+            <input class="user-data-editing" type="text" v-model.trim="$v.userName.$model">
+          </div>
+          <div class="user-dataline">
+            <div class="user-data-label">Телефон</div>
+            <div class="user-data-text">{{'+' + userData.user.phone_number }}</div>
+          </div>
+        </div>
+        <div class="inner-column-30">
+          <div class="user-dataline">
+            <div class="user-data-label">Дата рождения</div>
+            <div class="user-data-text">{{ userData.user.bDay || 'Не указана' }}</div>
+          </div>
+          <div class="user-dataline">
+            <div class="user-data-label">Почта</div>
+            <input class="user-data-editing" type="text" v-model.trim="$v.userEmail.$model">
+          </div>
+        </div>
+        <div class="inner-column-30">
+          <div class="user-dataline">
+            <div class="user-data-label">Пол</div>
+            <div class="user-data-text">{{ userData.user.sex == 1 ? 'Мужской' : 'Женский' }}</div>
+          </div>
+        </div>
+      </div>
+      <svg class="block-edit" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" @click="privateEdit = !privateEdit">
         <path d="M4 17V20H7L16 11L13 8L4 17Z" stroke="#A1A4B2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M15 6L18 9L20.5 6.5L17.5 3.5L15 6Z" stroke="#A1A4B2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
+
     <div class="ads-discounts cabinet-block">
       <h2 class="block-title">Реклама и акции</h2>
       <div class="block-inner">
@@ -101,9 +130,13 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate';
+import { required, email } from 'vuelidate/lib/validators';
+
 export default {
   data() {
     return {
+      privateEdit: false,
       user: {
         fullName: 'Балдёж Приколдесович',
         birthDay: '02.02.1990',
@@ -142,7 +175,18 @@ export default {
             type: 'visa'
           }
         ]
-      }
+      },
+      userName: this.userData.user.name || null,
+      userEmail: this.userData.user.email || null,
+      userBDay: this.userData.user.bDay || null,
+      userSex: this.userData.user.sex,
+    }
+  },
+  mixins: [validationMixin],
+  props: {
+    userData: {
+      type: Object,
+      required: true,
     }
   },
   methods: {
@@ -152,6 +196,15 @@ export default {
         type == 'maestro' ? require('~/assets/img/cards/maestro.png') :
         type == 'americanexpress' ? require('~/assets/img/cards/americanexpress.png') :
         require('~/assets/img/cards/unknown.png');
+    }
+  },
+  validations: {
+    userEmail: {
+      email,
+      required
+    },
+    userName: {
+      required
     }
   }
 }

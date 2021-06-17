@@ -24,9 +24,16 @@
                 <div class="plus-btn" @click="addOne(cartItem.id)">+</div>
               </div>
             </div>
-            <div class="price centered">{{ cartItem.price }}</div>
-            <div class="total centered">{{ cartItem.price * productsCounts[cartItem.id] }}</div>
+            <div class="price centered">{{ Intl.NumberFormat("ru-RU").format(cartItem.price) + " ₸" }}</div>
+            <div class="total centered">{{ Intl.NumberFormat("ru-RU").format(cartItem.price * productsCounts[cartItem.id]) + " ₸" }}</div>
             <div class="remove"><img src="~/assets/icons/delete.svg" alt="Удалить из корзины" @click="cartRemove(cartItem.id)"></div>
+          </div>
+        </div>
+        <div class="cart-under-block">
+          <nuxt-link to="/catalog" class="continue-shopping">Продолжить покупки</nuxt-link>
+          <div class="order-actions">
+            <span class="overall-price">{{ 'Итого: ' + Intl.NumberFormat("ru-RU").format(overallPrice) + " ₸" }}</span>
+            <button class="create-order">Оформить заказ</button>
           </div>
         </div>
       </div>
@@ -65,6 +72,13 @@ export default {
         counts[product.id] = product.count;
       });
       return counts;
+    },
+    overallPrice() {
+      let price = 0;
+      this.cartItems.forEach(cartItem => {
+        price += this.productsCounts[cartItem.id] * +cartItem.price;
+      });
+      return price;
     }
   },
   async beforeMount() {
@@ -217,7 +231,30 @@ export default {
     text-align: center;
   }
   &:last-child {
-    margin-bottom: 60px;
+    margin-bottom: 24px;
+  }
+}
+
+.cart-under-block {
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+  .continue-shopping {
+    font-weight: 600;
+  }
+  .overall-price {
+    font-weight: 600;
+    margin-right: 36px;
+  }
+  button.create-order {
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    color: #fff;
+    background-color: #05054B;
+    cursor: pointer;
+    padding: 12px 36px;
+    border-radius: 20px;
   }
 }
 </style>

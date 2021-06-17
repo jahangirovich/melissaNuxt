@@ -26,6 +26,10 @@ html {
   color: #3F414E;
 }
 
+html, button, select, input, textarea {
+  font-family: 'SF UI Text', 'Roboto', sans-serif;
+}
+
 body {
   margin-top: 95px;
 }

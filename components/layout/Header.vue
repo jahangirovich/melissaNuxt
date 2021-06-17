@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <div class="header-main">
-        <nuxt-link to="/">
+        <nuxt-link to="/" class="logo-container">
           <img src="@/assets/img/logo.svg" alt="" class="logo">
         </nuxt-link>
         <nav>
@@ -64,7 +64,7 @@ header.header {
 .header-main {
   display: flex;
   align-items: center;
-  img.logo {
+  .logo-container {
     margin-right: 60px;
   }
   nav {
