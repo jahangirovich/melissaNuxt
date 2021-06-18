@@ -16,7 +16,9 @@
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">Дата рождения</div>
-            <div class="user-data-text">{{ userData.user.bDay || 'Не указана' }}</div>
+            <div class="user-data-text">{{
+              userData.user.bDay && new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long'}).format(new Date(userData.user.bDay)) || 'Не указана'
+              }}</div>
           </div>
           <div class="user-dataline">
             <div class="user-data-label">Почта</div>
@@ -26,7 +28,7 @@
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">Пол</div>
-            <div class="user-data-text">{{ userData.user.sex == 1 ? 'Мужской' : 'Женский' }}</div>
+            <div class="user-data-text">{{ +userData.user.sex == 0 ? 'Мужской' : 'Женский' }}</div>
           </div>
         </div>
       </div>
@@ -34,30 +36,40 @@
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">ФИО</div>
-            <input class="user-data-editing" type="text" v-model.trim="$v.userName.$model">
+            <input class="user-data-editing" :class="{ 'has-error': $v.userName.$error }" type="text" v-model.trim="$v.userName.$model">
           </div>
           <div class="user-dataline">
             <div class="user-data-label">Телефон</div>
-            <div class="user-data-text">{{'+' + userData.user.phone_number }}</div>
+            <div class="user-data-text">{{ '+' + userData.user.phone_number }}</div>
           </div>
         </div>
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">Дата рождения</div>
-            <div class="user-data-text">{{ userData.user.bDay || 'Не указана' }}</div>
+            <VueDatePicker
+              v-model="userBDay"
+              placeholder="ГГГГ-ММ-ДД"
+              :max-date="new Date().toISOString().substr(0, 10)"
+              min-date="1901-01-01"
+              color="#3BDE15"
+            />
           </div>
           <div class="user-dataline">
             <div class="user-data-label">Почта</div>
-            <input class="user-data-editing" type="text" v-model.trim="$v.userEmail.$model">
+            <input class="user-data-editing" :class="{ 'has-error': $v.userEmail.$error }" type="text" v-model.trim="$v.userEmail.$model">
           </div>
         </div>
         <div class="inner-column-30">
           <div class="user-dataline">
             <div class="user-data-label">Пол</div>
-            <div class="user-data-text">{{ userData.user.sex == 1 ? 'Мужской' : 'Женский' }}</div>
+            <select name="sex" id="sex" class="user-data-editing" v-model="userSex">
+              <option value="1">Женский</option>
+              <option value="0">Мужской</option>
+            </select>
           </div>
         </div>
       </div>
+      <div class="save-btn" :class="{ disabled: privateHasErrors }" v-if="privateEdit" @click="saveUserData">Сохранить</div>
       <svg class="block-edit" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" @click="privateEdit = !privateEdit">
         <path d="M4 17V20H7L16 11L13 8L4 17Z" stroke="#A1A4B2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M15 6L18 9L20.5 6.5L17.5 3.5L15 6Z" stroke="#A1A4B2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -189,6 +201,17 @@ export default {
       required: true,
     }
   },
+  components: {
+
+  },
+  computed: {
+    privateHasErrors() {
+      let hasErrors = !(
+        this.$v.userName.required
+      )
+      return hasErrors;
+    }
+  },
   methods: {
     cardImage(type) {
       return type == 'mastercard' ? require('~/assets/img/cards/mastercard.png') :
@@ -196,6 +219,25 @@ export default {
         type == 'maestro' ? require('~/assets/img/cards/maestro.png') :
         type == 'americanexpress' ? require('~/assets/img/cards/americanexpress.png') :
         require('~/assets/img/cards/unknown.png');
+    },
+    saveUserData() {
+      if(this.privateHasErrors) return;
+      this.$axios.setHeader('Authorization', `Bearer ${this.$cookies.get('auth-token')}`)
+      let data = {
+        name: this.userName,
+        sex: this.userSex,
+        bDay: this.userBDay,
+      };
+      if (this.userEmail) {
+        data.email = this.userEmail;
+      }
+      this.$axios.$put('profile/update', data).then(res => {
+        this.privateEdit = false;
+        this.userData.user.name = this.userName;
+        this.userData.user.sex = this.userSex;
+        this.userData.user.bDay = this.userBDay;
+        this.userData.user.email = this.userEmail;
+      });
     }
   },
   validations: {
@@ -205,7 +247,7 @@ export default {
     },
     userName: {
       required
-    }
+    },
   }
 }
 </script>
@@ -216,7 +258,7 @@ export default {
   flex-wrap: wrap;
 }
 .inner-column-30 {
-  width: 30%;
+  width: 32%;
 }
 .inner-column-40 {
   width: 40%;
@@ -235,11 +277,42 @@ export default {
   color: #A1A4B2;
   margin-bottom: 6px;
 }
+
+.user-data-text {
+  display: -webkit-box;
+  line-height: 1rem;
+  height: 2rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
 .block-edit {
   position: absolute;
   cursor: pointer;
   right: 24px;
   top: 24px;
+}
+.private-info.cabinet-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.save-btn {
+  display: flex;
+  background: #3BDE15;
+  padding: 12px 18px;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 24px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color .3s;
+  &.disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
 }
 
 .ads-discounts {
@@ -250,6 +323,21 @@ export default {
 
 .no-addresses {
   font-size: 14px;
+}
+
+input.user-data-editing {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #A1A4B2;
+  width: 90%;
+  &.has-error {
+    border-color: #f55555;
+  }
+}
+
+select.user-data-editing {
+  outline: none;
+  border: none;
 }
 
 .inner-column-40 {

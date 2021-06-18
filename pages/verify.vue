@@ -31,6 +31,7 @@ export default {
       this.$axios.$post('/verify/phone', {
         code: this.verifyCode,
         user_id: this.$route.query.user_id,
+        resetToken: this.$cookies.get('resetToken'),
       }).then(res => {
         this.$cookies.set('auth-token', res.token);
         this.$router.push(`/cabinet`);

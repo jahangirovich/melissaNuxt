@@ -18,18 +18,23 @@
       </svg>
       <span>Уведомления</span>
     </nuxt-link>
-    <nuxt-link to="/logout" class="logout">
+    <a to="/logout" class="logout" @click.prevent="logout">
       <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11.5 12.6333V3.56665M5.96681 5.8318C4.49234 7.27132 3.56641 9.27158 3.56641 11.4949C3.56641 15.8735 7.11941 19.4333 11.4997 19.4333C15.8823 19.4333 19.4331 15.8735 19.4331 11.4949C19.4331 9.27498 18.5185 7.27132 17.0474 5.8318" stroke="#A1A4B2" stroke-width="1.75" stroke-linecap="square"/>
       </svg>
       <span>Выйти из профиля</span>
-    </nuxt-link>
+    </a>
   </aside>
 </template>
 
 <script>
 export default {
-
+  methods: {
+    logout() {
+      this.$cookies.remove('auth-token');
+      this.$router.push('/');
+    }
+  }
 }
 </script>
 
@@ -72,6 +77,7 @@ aside a {
 
 .logout {
   transition: all .3s;
+  cursor: pointer;
   svg {
     path {
       transition: all .3s;

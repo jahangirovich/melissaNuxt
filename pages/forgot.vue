@@ -37,7 +37,8 @@ export default {
         this.$axios.$post('/forgot-password', {
           phone_number: this.phone
         }).then(res => {
-          this.$router.push(`/verify?user_id=${res.user_id}`)
+          this.$router.push(`/verify?user_id=${res.user}`);
+          this.$cookies.set('resetToken', res.resetToken);
         }).catch(err => {
           console.error(err)
         })

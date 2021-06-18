@@ -36,7 +36,7 @@ export default {
     }
   },
   async asyncData({ $axios, $cookies }) {
-    $axios.setHeader('Authorization', `Bearer ${$cookies.get('auth-token')}`)
+    $axios.setHeader('Authorization', `Bearer ${$cookies.get('auth-token')}`);
     const userData = await $axios.$get('/profile');
     console.log(userData);
     return { userData }

@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@mathieustan/vue-datepicker": "^0.2.11",
     "@nuxtjs/axios": "^5.13.1",
     "cleave.js": "^1.6.0",
     "cookie-universal-nuxt": "^2.1.4",

@@ -26,7 +26,8 @@ export default {
   plugins: [
     { src: '~/plugins/vue-range-component.client.js'},
     { src: '~/plugins/persisted-state.client.js'},
-    { src: '~/plugins/vuelidate.client.js' }
+    { src: '~/plugins/vuelidate.client.js' },
+    { src: '~/plugins/datepicker.client.js'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

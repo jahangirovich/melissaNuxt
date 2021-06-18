@@ -16,7 +16,7 @@
           </div>
           <div class="table-data-line" v-for="(cartItem, index) in cartItems" :key="index">
             <img class="image" :src="`https://melissa.a-lux.dev/storage/${JSON.parse(cartItem.images)[0]}`">
-            <div class="title">{{ cartItem.full_name }}</div>
+            <nuxt-link class="title" :to="`/product/${cartItem.id}`">{{ cartItem.full_name }}</nuxt-link>
             <div class="count centered">
               <div class="quantity">
                 <div class="minus-btn" @click="removeOne(cartItem.id)">-</div>
@@ -161,6 +161,13 @@ export default {
   grid-template-columns: 1fr 6fr 2fr 2fr 2fr 1fr;
   border-bottom: 1px solid #DEE0DE;
   padding: 12px 0;
+  .title {
+    font-weight: 500;
+    text-decoration: none;
+    color: #3F414E;
+    justify-content: flex-start;
+    font-size: 16px;
+  }
   div {
     display: flex;
     align-items: center;
@@ -168,6 +175,8 @@ export default {
     font-weight: 500;
     font-size: 14px;
     &.title {
+      text-decoration: none;
+      color: #3F414E;
       justify-content: flex-start;
       font-size: 16px;
     }
