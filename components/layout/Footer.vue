@@ -15,18 +15,18 @@
         <h2 class="footer-title">Информация</h2>
         <div class="links">
           <nuxt-link to="/">Новости</nuxt-link>
-          <nuxt-link to="/">О компании</nuxt-link>
+          <nuxt-link to="/about">О компании</nuxt-link>
           <nuxt-link to="/">Контакты</nuxt-link>
-          <nuxt-link to="/">Карьера</nuxt-link>
+          <nuxt-link to="/vacancies">Карьера</nuxt-link>
           <nuxt-link to="/">Партнеры</nuxt-link>
         </div>
       </div>
       <div class="customer-block footer-block">
         <h2 class="footer-title">Покупателю</h2>
         <div class="links">
-          <nuxt-link to="/">Доставка и оплата</nuxt-link>
-          <nuxt-link to="/">Как сделать заказ</nuxt-link>
-          <nuxt-link to="/">Вопросы и ответы</nuxt-link>
+          <nuxt-link to="/delivery">Доставка и оплата</nuxt-link>
+          <nuxt-link to="/howto">Как сделать заказ</nuxt-link>
+          <nuxt-link to="/questions">Вопросы и ответы</nuxt-link>
           <nuxt-link to="/">Контроль качества</nuxt-link>
           <nuxt-link to="/">Блог</nuxt-link>
         </div>

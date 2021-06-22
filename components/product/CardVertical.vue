@@ -1,7 +1,8 @@
 <template>
   <div class="card-vertical">
     <nuxt-link :to="`/product/${productId}`" tabindex="-1">
-      <img :src="image" :alt="name" class="card-photo" />
+      <img v-if="image" :src="image" :alt="name" class="card-photo" />
+      <img v-else src="~/assets/img/product-placeholder.png" :alt="name" class="card-photo" />
     </nuxt-link>
     <nuxt-link :to="`/product/${productId}`" class="product-name">
       {{ name }}

@@ -8,8 +8,8 @@
         <div class="page-content">
           <aside class="catalog-aside">
             <div class="categories-block">
-              <div class="category" v-for="(cat, index) in categories" :key="index" :class="{active: $route.query.category == cat.id}">
-                <span @click="changeCategory(cat.id)">{{cat.name}}</span>
+              <div class="category" v-for="(cat, index) in categories" :key="index" :class="{active: $route.query.category == cat.integration_id}">
+                <span @click="changeCategory(cat.integration_id)">{{cat.name}}</span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                  <path d="M2 4L6 8L10 4" stroke="#3BDE15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -108,13 +108,13 @@ export default {
           url: '/catalog'
         },
       ]
-      if (this.category?.id) {
-        crumbs.push({title: this.category.name, url: '/catalog?category=' + this.category.id})
+      if (this.category?.integration_id) {
+        crumbs.push({title: this.category.name, url: '/catalog?category=' + this.category.integration_id})
       }
       return crumbs;
     },
     category() {
-      return this.categories?.find(cat => cat.id == this.$route.query.category) || false;
+      return this.categories?.find(cat => cat.integration_id == this.$route.query.category) || false;
     },
   },
   async beforeMount() {
@@ -122,7 +122,7 @@ export default {
       this.categories = res.catalogs;
     });
     if(this.category) {
-      this.updateProducts(this.category.id);
+      this.updateProducts(this.category.integration_id);
     } else {
       this.updateProducts(0);
     }
@@ -151,7 +151,7 @@ export default {
   watch: {
     category() {
       if (this.category) {
-        this.updateProducts(this.category.id);
+        this.updateProducts(this.category.integration_id);
       } else {
         this.updateProducts(0);
       }
@@ -204,6 +204,7 @@ aside {
       cursor: pointer;
       transform: none;
       transition: transform .3s;
+      flex: 12px 0 0;
     }
     &.active {
       color: #3BDE15;

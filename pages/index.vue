@@ -63,7 +63,7 @@
             :discount="product.discount || null"
             :productId="product.id"
             :isFavorite="product.isFavorite || null"
-            :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
+            :image="product.images && product.images.length ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
           />
         </div>
         <nuxt-link class="all-products-btn" to="/catalog">

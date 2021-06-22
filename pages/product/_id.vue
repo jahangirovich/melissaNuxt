@@ -8,29 +8,49 @@
             class="slick-container-nav"
             ref="slick"
             :options="navSlickOptions"
+            v-if="JSON.parse(productData.images) && JSON.parse(productData.images).length"
           >
             <img class="slide" v-for="(image, index) in JSON.parse(productData.images)" :key="index" :src="`https://melissa.a-lux.dev/storage/${image}`" alt="">
+          </slick>
+          <slick
+            class="slick-container-nav"
+            ref="slick"
+            :options="navSlickOptions"
+            v-else
+          >
+            <img class="slide" src="~assets/img/product-placeholder.png" alt="">
           </slick>
           <slick
             class="slick-container-main"
             ref="slick"
             :options="mainSlickOptions"
+            v-if="JSON.parse(productData.images) && JSON.parse(productData.images).length"
           >
             <div class="slide" v-for="(image, index) in JSON.parse(productData.images)" :key="index">
               <img :src="`https://melissa.a-lux.dev/storage/${image}`" alt="">
             </div>
           </slick>
+          <slick
+            class="slick-container-main"
+            ref="slick"
+            :options="mainSlickOptions"
+            v-else
+          >
+            <div class="slide">
+              <img src="~assets/img/product-placeholder.png" alt="">
+            </div>
+          </slick>
           <div class="info-block">
             <h1 class="title">{{productData.full_name}}</h1>
             <h2 class="price">{{ Intl.NumberFormat("ru-RU").format(+productData.price) + " ₸" }}</h2>
-            <div class="stock" :class="{'instock': product.stock, 'notinstock': !product.stock}">
-              <img src="~/assets/icons/in-stock.svg" alt="" v-if="product.stock">
+            <div class="stock" :class="{'instock': productData.inStock, 'notinstock': !productData.inStock}">
+              <img src="~/assets/icons/in-stock.svg" alt="" v-if="productData.inStock">
               <img src="~/assets/icons/not-in-stock.svg" alt="" v-else>
-              <span>{{product.stock ? 'В наличии' : 'Нет в наличии'}}</span>
+              <span>{{productData.inStock ? 'В наличии' : 'Нет в наличии'}}</span>
             </div>
-            <div class="general-info">
+            <div class="general-info" v-if="productData.generalInfo && productData.generalInfo.length">
               <ProductInfoLine
-                v-for="(data, index) in product.generalInfo"
+                v-for="(data, index) in productData.generalInfo"
                 :key="index"
                 :title="data.title"
                 :value="data.value"
@@ -60,31 +80,31 @@
             </div>
           </div>
         </section>
-        <section class="product-pharmacological">
+        <section class="product-pharmacological" v-if="productData.pharmParameters && productData.pharmParameters.length > 0">
           <h1 class="title">Фармакологические свойства</h1>
           <ProductPharmaParamLine
-            v-for="(pharmParam, index) in product.pharmParameters"
+            v-for="(pharmParam, index) in productData.pharmParameters"
             :key="index"
             :title="pharmParam.title"
             :value="pharmParam.value"
           />
         </section>
-        <section class="product-pharmacological-descr">
+        <section class="product-pharmacological-descr" v-if="productData.pharmDescr">
           <h1 class="title">Фармакологические свойства</h1>
-          <p>{{ product.pharmDescr }}</p>
+          <p>{{ productData.pharmDescr }}</p>
         </section>
-        <section class="analog-list">
+        <section class="analog-list" v-if="analogProducts && analogProducts.length > 0">
           <h1 class="title">Аналоги</h1>
           <div class="products-container">
             <product-card-vertical
               v-for="(product, index) in analogProducts"
               :key="index"
-              :name="product.name"
-              :price="product.price"
-              :oldPrice="product.oldPrice"
-              :discount="product.discount"
-              :productId="product.productId"
-              :isFavorite="product.isFavorite"
+              :name="productData.name"
+              :price="productData.price"
+              :oldPrice="productData.oldPrice"
+              :discount="productData.discount"
+              :productId="productData.productId"
+              :isFavorite="productData.isFavorite"
             />
           </div>
         </section>
@@ -119,142 +139,10 @@ export default {
         arrows: false,
         waitForAnimate: false,
       },
-      product: {
-        title: 'Фервекс №8 пак Комплекс',
-        id: 1,
-        price: 1220,
-        stock: 1,
-        images: [
-          'https://images.unsplash.com/photo-1535043205849-513fe27db33e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHllbGxvd3xlbnwwfDJ8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-          'https://images.unsplash.com/photo-1595392029711-8a206145f976?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cmVkJTIwYmFja2dyb3VuZHxlbnwwfDJ8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-          'https://images.unsplash.com/photo-1601923926156-014f6a9767d2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjQwfHxncmVlbiUyMGJhY2tncm91bmR8ZW58MHwyfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-          'https://images.unsplash.com/photo-1595391595051-1ec0194535dc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Ymx1ZSUyMGJhY2tncm91bmR8ZW58MHwyfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-          'https://images.unsplash.com/photo-1527275393322-8ddae8bd5de9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
-        ],
-        generalInfo: [
-          {
-            title: 'Производитель',
-            value: 'UPSA'
-          },
-          {
-            title: 'Страна',
-            value: 'Франция',
-          },
-          {
-            title: 'Артикул',
-            value: '2548976'
-          }
-        ],
-        pharmDescr: `Фармакологические эффекты, обусловленные компонентами, входящими в состав препарата фервекс:
-
-— фенирамина малеат — блокатор Н1-рецепторов, обеспечивает десенсибилизирующее действие, проявляющееся уменьшением выраженности воспалительной реакции слизистых оболочек верхних дыхательных путей (улучшается носовое дыхание, уменьшаются ринорея, чихание и слезотечение);
-
-— парацетамол оказывает жаропонижающее и обезболивающее действие, облегчающие выраженность боли и лихорадки (головная боль, миалгия);
-
-— аскорбиновая кислота компенсирует потребности организма в витамине С.
-
-Парацетамол после приема внутрь быстро и почти полностью всасывается в пищеварительном тракте. Cmax парацетамола в плазме крови достигается через 30–60 мин после приема. Парацетамол быстро распределяется во всех тканях. Концентрации в крови, слюне и плазме крови подобны. Связывание с белками плазмы крови слабое. Парацетамол метаболизируется в печени с образованием соединений с глюкуроновой кислотой и сульфатами. Второстепенный метаболический путь, который катализируется цитохромом P 450, приводит к образованию промежуточного реагента (N-ацетилбензохинонимина), который при нормальных условиях применения быстро обезвреживается восстановленным глутатионом и выводится с мочой после конъюгации с цистеином и меркаптуровой кислотой.`,
-        pharmParameters: [
-          {
-            title: 'Торговое название',
-            value: 'Фервекс',
-          },
-          {
-            title: 'Действующие вещества',
-            value: 'Кислота аскорбиновая, Парацетамол, Фенирамин',
-          },
-          {
-            title: 'Форма выпуска',
-            value: 'Порошок',
-          },
-          {
-            title: 'Способ введения',
-            value: 'Внутрь',
-          },
-          {
-            title: 'Вид упаковки',
-            value: 'Пакет',
-          },  
-          {
-            title: 'Количество в упаковке',
-            value: '8 пакетиков',
-          },
-          {
-            title: 'Взаимодействие с едой',
-            value: 'Не имеет значения',
-          },
-          {
-            title: 'Чувствительность к свету',
-            value: 'Не чувствительный',
-          },
-          {
-            title: 'Условия отпуска',
-            value: 'Без рецепта',
-          },
-          {
-            title: 'Срок годности',
-            value: '3 года',
-          },
-          {
-            title: 'Температура хранения',
-            value: 'от 5°C до 25°C',
-          },
-          {
-            title: 'Производитель',
-            value: 'УПСА САС',
-          },
-          {
-            title: 'Страна производства',
-            value: 'Франция',
-          },
-        ],
-        category: {
-          id: 1,
-          title: 'Лекарственные средства'
-        }
-      },
-      analogProducts: [
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 1,
-          isFavorite: true,
-          discount: "-20%"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          productId: 2,
-          discount: "-20%"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 3,
-          isFavorite: true
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 5,
-          isFavorite: true,
-          discount: "-500₸"
-        },
-        {
-          name: "Фервекс №8 пак Комплекс",
-          price: 1220,
-          oldPrice: 1220,
-          productId: 12
-        }
-      ],
     }
   },
   async asyncData({ $axios, params }) {
     const productData = await $axios.$get(`https://melissa.a-lux.dev/api/items/${params.id}`);
-    console.log(productData);
     return { productData };
   },
   computed: {
@@ -279,8 +167,8 @@ export default {
           url: '/catalog'
         },
         {
-          title: this.product.category.title,
-          url: '/catalog?category=' + this.product.category.id
+          title: this.productData?.category?.title,
+          url: '/catalog?category=' + this.productData?.category?.id
         },
         {
           title: this.productData.full_name,
