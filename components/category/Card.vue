@@ -40,10 +40,6 @@ export default {
     width: 100%;
     height: 240px;
   }
-  &:hover {
-    box-shadow: 0px 0 7px 2px rgba(48,48,48,0.2);
-    -webkit-box-shadow: 0px 0 7px 2px rgba(48,48,48,0.2);
-  }
 }
 h2.category-name {
   position: absolute;
@@ -53,5 +49,12 @@ h2.category-name {
   font-weight: 600;
   font-size: 26px;
   width: 60%;
+}
+
+@media screen and (max-width: 992px) {
+  .category-card {
+    width: 100%;
+    margin-bottom: 24px;
+  }
 }
 </style>

@@ -5,7 +5,7 @@
         <nuxt-link to="/" class="logo-container">
           <img src="@/assets/img/logo.svg" alt="" class="logo">
         </nuxt-link>
-        <nav>
+        <nav class="navbar">
           <ol>
             <li>
               <img src="@/assets/icons/pin.svg" class="pin-icon">
@@ -106,6 +106,12 @@ header.header {
     img {
       margin-left: 6px;
     }
+  }
+}
+
+@media screen and (max-width: 992px){
+  .navbar {
+    display: none;
   }
 }
 </style>

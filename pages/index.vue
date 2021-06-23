@@ -258,4 +258,45 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 992px) {
+  .sale {
+    flex-direction: column;
+    margin-bottom: 24px;
+    .banner-main {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .banners-small {
+      flex-direction: row;
+      width: 100%;
+      img {
+        width: 49%;
+      }
+    }
+  }
+  h1.title {
+    font-size: 18px !important;
+  }
+  .discount-products a.all-products-btn {
+    max-width: 100%;
+  }
+  p, a {
+    font-size: 14px;
+  }
+  .companies .logo-container {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 120px;
+  }
+  .popular-products {
+    margin-bottom: 24px;
+  }
+  .popular-categories {
+    margin-bottom: 24px;
+  }
+  .categories-container {
+    flex-direction: column;
+  }
+}
 </style>

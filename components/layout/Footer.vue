@@ -102,4 +102,19 @@ footer.footer .container{
     }
   }
 }
+
+@media screen and (max-width: 992px){
+  footer.footer .container {
+    flex-direction: column;
+  }
+  footer.footer .container .footer-block {
+    margin-bottom: 24px;
+  }
+  .main-block.footer-block {
+    order: 5;
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+  }
+}
 </style>

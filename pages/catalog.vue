@@ -144,19 +144,11 @@ export default {
       }
     },
     changeCategory(categoryId) {
+      if (this.category.integration_id == categoryId) return;
       this.$router.push({query: {category: categoryId}});
       this.updateProducts(categoryId);
     }
   },
-  watch: {
-    category() {
-      if (this.category) {
-        this.updateProducts(this.category.integration_id);
-      } else {
-        this.updateProducts(0);
-      }
-    }
-  }
 }
 </script>
 

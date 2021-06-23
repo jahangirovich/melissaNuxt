@@ -1,14 +1,30 @@
 <template>
   <div class="topbar">
+    <div class="container mobile-only">
+      <div class="searchbar">
+        <div class="search search-mobile">
+          <input type="text" placeholder="Поиск лекарств">
+        </div>
+      </div>
+      <div class="phone-numbers mobile-only">
+        <a href="tel:+77272938543">+7 (727) 293 85 43</a>
+        <a href="tel:+77272910888">+7 (727) 291 08 88</a>
+      </div>
+    </div>
     <div class="container">
-      <div class="catalog">
+      <nuxt-link to="/catalog" class="catalog" @click="catalogsActive(false, true)" @mouseenter.native="catalogsActive(true)" @mouseleave.native="catalogsActive(false)">
         <img src="@/assets/icons/catalog-icon.svg" alt="">
         <span>Каталог товаров</span>
-      </div>
-      <div class="search">
+        <layout-top-catalogs
+          class="catalog-list"
+          :isActive="isCatalogsActive"
+          :setActiveStatus="catalogsActive"
+        />
+      </nuxt-link>
+      <div class="search desktop-only">
         <input type="text" placeholder="Поиск лекарств">
       </div>
-      <div class="phones">
+      <div class="phones desktop-only">
         <img src="@/assets/icons/phone.svg" alt="">
         <div class="numbers">
           <a href="tel:+77272938543">+7 (727) 293 85 43</a>
@@ -30,6 +46,8 @@ export default {
   data() {
     return {
       cartCount: 3,
+      isCatalogsActive: false,
+      catalogsTimeout: null,
     }
   },
   computed: {
@@ -39,7 +57,23 @@ export default {
       this.products.forEach(product => { count += product.count })
       return count;
     }
-  }
+  },
+  methods: {
+    catalogsActive(isActive, isInstant = false) {
+      if (isActive) {
+        clearTimeout(this.catalogsTimeout);
+        this.isCatalogsActive = true;
+      } else {
+        if (!isInstant) {
+          this.catalogsTimeout = setTimeout(() => {
+            this.isCatalogsActive = false;
+          }, 500);
+        } else {
+          this.isCatalogsActive = false;
+        }
+      }
+    }
+  },
 }
 </script>
 
@@ -47,6 +81,7 @@ export default {
 .topbar .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .topbar {
@@ -57,8 +92,12 @@ export default {
 
 .catalog {
   display: flex;
+  position: relative;
+  flex: auto 0 0;
   align-items: center;
   cursor: pointer;
+  text-decoration: none;
+  color: #3F414E;
   img {
     margin-right: 12px;
   }
@@ -93,6 +132,7 @@ export default {
 .phones {
   display: flex;
   align-items: center;
+  flex: auto 0 0;
   img {
     width: 27px;
     height: 27px;
@@ -112,6 +152,7 @@ export default {
 }
 .cart {
   display: flex;
+  flex: auto 0 0;
   position: relative;
   justify-content: center;
   align-items: center;
@@ -136,4 +177,40 @@ export default {
     color: #fff;
   }
 }
+
+// Adaptive
+
+@media screen and (max-width: 992px){
+  .searchbar {
+    width: 100%;
+    margin-bottom: 12px;
+    input {
+      box-sizing: border-box;
+      width: 100%;
+    }
+  }
+
+  .container.mobile-only {
+    margin-bottom: 12px;
+    flex-direction: column;
+    .phone-numbers {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      a {
+        font-size: 14px;
+        color: #05054B;
+        text-decoration: none;
+        margin-bottom: 3px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .search:not(.search-mobile) input {
+    width: 450px;
+  }
+}
+
 </style>

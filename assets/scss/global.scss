@@ -77,6 +77,23 @@ a {
   justify-content: space-between;
 }
 
+@media screen and (min-width: 993px){
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .container {
+    padding: 0 18px;
+  }
+}
+
+
+
 
 // Transitions
 

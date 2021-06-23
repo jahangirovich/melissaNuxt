@@ -115,8 +115,10 @@ export default {
   }
   .product-name {
     display: block;
+    font-size: 0.875rem;
     width: 90%;
-    height: 2rem;
+    height: 1.75rem;
+    overflow: hidden;
     text-align: center;
     text-decoration: none;
     color: #3f414e;
