@@ -1,7 +1,8 @@
 <template>
   <div class="product-big-card">
     <nuxt-link :to="`/product/${productId}`" tabindex="-1">
-      <img class="product-image" :src="image" :alt="name">
+      <img v-if="image" class="product-image" :src="image" :alt="name">
+      <img v-else class="product-image" src="~/assets/img/product-placeholder.png" :alt="name">
     </nuxt-link>
     <div class="product-data">
       <nuxt-link :to="`/product/${productId}`">

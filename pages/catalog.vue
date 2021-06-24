@@ -74,6 +74,12 @@
                 :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
               />
             </div>
+            <catalog-paginator
+              :currentPage="paginator.currentPage"
+              :lastPage="paginator.lastPage"
+              :updateProducts="updateProducts"
+              :categoryId="paginator.categoryId"
+            />
           </main>
         </div>
       </div>
@@ -94,6 +100,10 @@ export default {
       },
       products: [],
       page: this.$route.query.page ? +this.$route.query.page : 1,
+      paginator: {
+        lastPage: 1,
+        currentPage: 1,
+      },
     }
   },
   computed: {
@@ -122,21 +132,25 @@ export default {
       this.categories = res.catalogs;
     });
     if(this.category) {
-      this.updateProducts(this.category.integration_id);
+      this.updateProducts(this.category.integration_id, this.$route.query.page || 1);
     } else {
-      this.updateProducts(0);
+      this.updateProducts(0, this.$route.query.page || 1);
     }
   },
   methods: {
-    updateProducts(catalogId) {
+    updateProducts(catalogId, page = 1) {
+      this.paginator.categoryId = catalogId;
+      this.$router.push({query: { page, category: catalogId }});
       if(!catalogId) {
-        this.$axios.$get('welcome').then(res => {
+        this.$axios.$get(`welcome?page=${page}`).then(res => {
           this.products = res.items.data;
+          this.paginator.currentPage = res.items.current_page;
+          this.paginator.lastPage = res.items.last_page;
         }).catch(err => {
           console.error(err);
         });
       } else {
-        this.$axios.$get(`catalog/${catalogId}`).then(res => {
+        this.$axios.$get(`catalog/${catalogId}?page=${page}`).then(res => {
           this.products = res.catalog.sub_catalog_items;
         }).catch(err => {
           console.error(err);
