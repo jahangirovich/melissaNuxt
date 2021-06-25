@@ -71,4 +71,16 @@ h1.title {
     }
   }
 }
+
+@media screen and (max-width: 992px) {
+  .howto-stages {
+    flex-direction: column;
+    .stage {
+      width: 100%;
+      &:not(:last-child) {
+        margin-bottom: 48px;
+      }
+    }
+  }
+}
 </style>

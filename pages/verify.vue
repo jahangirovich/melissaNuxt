@@ -63,7 +63,8 @@ export default {
 <style lang="scss" scoped>
 .verify-form {
   box-sizing: border-box;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   margin-top: 70px;
   margin-bottom: 140px;

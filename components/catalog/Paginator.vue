@@ -4,7 +4,8 @@
     <div class="page paginator-btn" @click="setPage(1)" :class="{active: currentPage == 1}">1</div>
     <div class="dotted paginator-btn inactive" v-if="hasBeforeDots">...</div>
     <div class="page paginator-btn" @click="setPage(1 + 1)" :class="{active: currentPage == 1 + 1}" v-else>{{ 1 + 1 }}</div>
-    <div class="page paginator-btn" @click="setPage(page)" :class="{active: page == currentPage}" v-for="page in renderedPages" :key="page">{{ page }}</div>
+    <div class="page paginator-btn desktop-only" @click="setPage(page)" :class="{active: page == currentPage}" v-for="page in renderedPages" :key="`${page}`">{{ page }}</div>
+    <div class="page paginator-btn mobile-only" @click="setPage(page)" :class="{active: page == currentPage}" v-for="page in renderedPagesMobile" :key="`${page}-mobile`">{{ page }}</div>
     <div class="dotted paginator-btn inactive" v-if="hasAfterDots">...</div>
     <div class="page paginator-btn" @click="setPage(lastPage - 1)" :class="{active: currentPage == lastPage - 1 }" v-else>{{ lastPage - 1 }}</div>
     <div class="page paginator-btn" @click="setPage(lastPage)" :class="{active: currentPage == lastPage}">{{lastPage}}</div>
@@ -41,6 +42,7 @@ export default {
     },
     setPage(page) {
       this.updateProducts(this.categoryId, page);
+      window.scrollTo(0, 0);
     }
   },
   computed: {
@@ -48,6 +50,16 @@ export default {
       let rendered = [];
       let firstRendered = this.currentPage - 2 > 3 ? this.currentPage - 2 : 3;
       let lastRendered = this.currentPage + 2 < this.lastPage - 2 ? this.currentPage + 2 : this.lastPage - 2;
+
+      for (let i = firstRendered; i < lastRendered+1; i++) {
+        rendered.push(i);
+      }
+      return rendered;
+    },
+    renderedPagesMobile() {
+      let rendered = [];
+      let firstRendered = this.currentPage - 1 > 2 ? this.currentPage - 1 : 3;
+      let lastRendered = this.currentPage + 1 < this.lastPage - 1 ? this.currentPage + 1 : this.lastPage - 1;
 
       for (let i = firstRendered; i < lastRendered+1; i++) {
         rendered.push(i);

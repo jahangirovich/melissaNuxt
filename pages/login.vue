@@ -88,7 +88,8 @@ export default {
 <style lang="scss" scoped>
 .login-form {
   box-sizing: border-box;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   margin-top: 70px;
   margin-bottom: 140px;
@@ -153,6 +154,12 @@ export default {
   }
   input {
     border-color: #ff2626;
+  }
+}
+
+@media screen and (max-width: 992px){
+  .login-form .auth-actions .btn-login {
+    padding: 12px 60px;
   }
 }
 </style>

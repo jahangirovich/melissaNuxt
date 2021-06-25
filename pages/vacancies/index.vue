@@ -80,4 +80,16 @@ h1.title {
     color: #838383;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .vacancy-card {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .vacancy-card {
+    width: 100%;
+  }
+}
 </style>

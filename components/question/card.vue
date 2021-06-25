@@ -58,4 +58,10 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 992px){
+  .question-card {
+    width: 100%;
+  }
+}
 </style>

@@ -6,7 +6,7 @@
         <h1 class="title" v-if="category">{{ category.name }}</h1>
         <h1 class="title" v-else>Каталог</h1>
         <div class="page-content">
-          <aside class="catalog-aside">
+          <aside class="catalog-aside desktop-only">
             <div class="categories-block">
               <div class="category" v-for="(cat, index) in categories" :key="index" :class="{active: $route.query.category == cat.integration_id}">
                 <span @click="changeCategory(cat.integration_id)">{{cat.name}}</span>
@@ -99,7 +99,6 @@ export default {
         max: 500,
       },
       products: [],
-      page: this.$route.query.page ? +this.$route.query.page : 1,
       paginator: {
         lastPage: 1,
         currentPage: 1,
@@ -126,6 +125,9 @@ export default {
     category() {
       return this.categories?.find(cat => cat.integration_id == this.$route.query.category) || false;
     },
+    page() {
+      return this.$route.query.page ? +this.$route.query.page : 1;
+    }
   },
   async beforeMount() {
     await this.$axios.$get('catalogs-subCatalogs').then(res => {
@@ -152,6 +154,8 @@ export default {
       } else {
         this.$axios.$get(`catalog/${catalogId}?page=${page}`).then(res => {
           this.products = res.catalog.sub_catalog_items;
+          this.paginator.currentPage = res.catalog.current_page;
+          this.paginator.lastPage = res.catalog.last_page;
         }).catch(err => {
           console.error(err);
         });
@@ -298,6 +302,14 @@ aside {
   .products-container {
     display: flex;
     flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .catalog-main {
+    .products-container {
+      justify-content: space-between;
+    }
   }
 }
 </style>

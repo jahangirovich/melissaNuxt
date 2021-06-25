@@ -16,7 +16,7 @@
       </section>
       <section class="popular-products">
         <h1 class="title">Популярные товары</h1>
-        <div class="products-popular">
+        <div class="products-popular desktop-only">
           <div class="products-grid">
             <product-card-horizontal
               v-for="(product, index) in (popularProducts.length ? popularProducts.slice(0, 4) : [])"
@@ -29,7 +29,20 @@
           </div>
           <div class="product-big">
             <product-big-card
+              class="desktop-only"
               v-for="(product, index) in (popularProducts.length ? popularProducts.slice(4, 5) : [])"
+              :key="index"
+              :name="product.full_name"
+              :price="+product.price"
+              :productId="+product.id"
+              :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
+            />
+          </div>
+        </div>
+        <div class="products-popular mobile-only">
+          <div class="products-grid">
+            <product-card-vertical
+              v-for="(product, index) in (popularProducts.length ? popularProducts.slice(0, 6) : [])"
               :key="index"
               :name="product.full_name"
               :price="+product.price"
@@ -216,6 +229,7 @@ export default {
   }
   .products-container {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
   }
   a.all-products-btn {
@@ -251,7 +265,7 @@ export default {
   .logo-container {
     height: 120px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     img {
       max-height: 120px;
@@ -291,12 +305,32 @@ export default {
   }
   .popular-products {
     margin-bottom: 24px;
+    .products-grid {
+      width: 100%;
+      justify-content: space-between;
+    }
   }
   .popular-categories {
     margin-bottom: 24px;
   }
   .categories-container {
     flex-direction: column;
+    width: 60%;
+    margin: 0 auto;
   }
+  .discount-products .products-container {
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .categories-container {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.products-popular.mobile-only {
+  justify-content: center;
 }
 </style>

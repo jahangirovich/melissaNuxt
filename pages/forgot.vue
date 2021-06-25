@@ -56,7 +56,8 @@ export default {
 <style lang="scss" scoped>
 .forgot-form {
   box-sizing: border-box;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   margin-top: 70px;
   margin-bottom: 140px;
@@ -100,6 +101,13 @@ export default {
     border-radius: 40px;
     cursor: pointer;
     margin-bottom: 12px;
+  }
+}
+
+@media screen and (max-width: 992px){
+  .forgot-form .send-code-btn {
+    box-sizing: border-box;
+    padding: 12px 60px;
   }
 }
 </style>

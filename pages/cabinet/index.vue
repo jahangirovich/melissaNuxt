@@ -57,4 +57,10 @@ h1.title {
 .cabinet-main {
   display: flex;
 }
+
+@media screen and (max-width: 992px){
+  .cabinet-main {
+    flex-direction: column;
+  }
+}
 </style>

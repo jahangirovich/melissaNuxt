@@ -102,7 +102,7 @@ export default {
   padding: 36px 12px 20px;
   border-radius: 6px;
   border: 1px solid #dee0e4;
-  width: 230px;
+  width: 220px;
   align-items: center;
   flex-direction: column;
   position: relative;
@@ -210,6 +210,13 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 992px){
+  .card-vertical {
+    margin-right: 0;
+  }
+}
+
 .favorite-enter-active,
 .favorite-leave-active {
   transition: all 0.5s;

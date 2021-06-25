@@ -92,4 +92,11 @@ aside a {
     }
   }
 }
+
+@media screen and (max-width: 992px) {
+  aside.cabinet-aside {
+    box-sizing: border-box;
+    width: 100%;
+  }
+}
 </style>

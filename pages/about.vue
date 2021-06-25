@@ -40,6 +40,9 @@ export default {
 <style lang="scss">
 .about-main {
   margin-top: 24px;
+  img {
+    width: 100%;
+  }
 }
 h1.about-title {
   font-weight: 700;

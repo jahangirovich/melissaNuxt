@@ -1,6 +1,7 @@
 <template>
   <div class="top-catalogs desktop-only" :class="{ 'is-active': isActive }">
     <div class="categories">
+      <div class="catalogs-title">Каталог товаров</div>
       <nuxt-link @click.native="setActiveStatus(false, true)" :to="`/catalog?category=${category.integration_id}`" class="category" v-for="category in categories" :key="category.id">{{ category.name }}</nuxt-link>
     </div>
   </div>
@@ -59,6 +60,11 @@ export default {
     text-decoration: none;
     padding: 4px 0;
     cursor: pointer;
+  }
+  .catalogs-title {
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 18px;
   }
 }
 </style>

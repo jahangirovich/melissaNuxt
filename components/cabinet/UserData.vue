@@ -430,4 +430,28 @@ select.user-data-editing {
     display: none;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .cabinet-block {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .cabinet-block {
+    .block-inner {
+      flex-wrap: wrap;
+      .inner-column-30 {
+        width: 100%;
+        .user-dataline, .user-dataline:not(:last-child) {
+          margin-bottom: 12px;
+        }
+      }
+      .inner-column-40 {
+        width: 100%;
+        margin-bottom: 18px;
+      }
+    }
+  }
+}
 </style>
