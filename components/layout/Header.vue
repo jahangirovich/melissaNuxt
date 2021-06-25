@@ -114,4 +114,16 @@ header.header {
     display: none;
   }
 }
+
+@media screen and (max-width: 576px){
+  .actions-btn .cabinet img.user-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0;
+    ~ span {
+      display: none;
+    }
+  }
+}
+
 </style>
