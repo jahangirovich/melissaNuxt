@@ -14,9 +14,9 @@
       <div class="info-block footer-block">
         <h2 class="footer-title">Информация</h2>
         <div class="links">
-          <nuxt-link to="/">Новости</nuxt-link>
+          <nuxt-link to="/news">Новости</nuxt-link>
           <nuxt-link to="/about">О компании</nuxt-link>
-          <nuxt-link to="/">Контакты</nuxt-link>
+          <nuxt-link to="/contacts">Контакты</nuxt-link>
           <nuxt-link to="/vacancies">Карьера</nuxt-link>
           <nuxt-link to="/">Партнеры</nuxt-link>
         </div>
