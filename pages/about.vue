@@ -41,7 +41,7 @@ export default {
 .about-main {
   margin-top: 24px;
   img {
-    width: 100%;
+    width: 60%;
   }
 }
 h1.about-title {

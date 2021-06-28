@@ -22,6 +22,19 @@
             </div>
           </div>
         </div>
+        <h1 class="title">Адреса Аптек</h1>
+        <div class="address-container">
+          <div class="address-names">
+            <div class="addres-item">
+              <span>Райымбека 239г</span>
+              <span>Тел.:227-32-56</span>
+            </div>
+          </div>
+          <div class="address-map">
+
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -46,6 +59,7 @@ export default {
   async asyncData({ $axios }) {
     let contacts = await $axios.$get('/contacts');
     contacts = contacts.contacts;
+    console.log(contacts);
     return { contacts };
   }
 }

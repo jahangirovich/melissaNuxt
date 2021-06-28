@@ -77,6 +77,16 @@ a {
   justify-content: space-between;
 }
 
+
+.address-container{
+  display: flex;
+}
+
+.addres-item{
+  display: flex;
+  flex-direction: column;
+}
+
 @media screen and (min-width: 993px){
   .mobile-only {
     display: none !important;

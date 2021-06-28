@@ -63,8 +63,8 @@ h1.title {
 
 .vacancy-card {
   width: 30%;
-  margin-right: 12px;
-  margin-bottom: 12px;
+  margin-right: 45px;
+  margin-bottom: 45px;
   padding: 18px;
   border: 1px solid #DEE0E4;
   border-radius: 12px;
