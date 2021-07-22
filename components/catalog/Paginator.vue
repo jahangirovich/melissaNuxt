@@ -3,12 +3,12 @@
     <div class="prev-page paginator-btn" @click="prev">&lt;</div>
     <div class="page paginator-btn" @click="setPage(1)" :class="{active: currentPage == 1}">1</div>
     <div class="dotted paginator-btn inactive" v-if="hasBeforeDots">...</div>
-    <div class="page paginator-btn" @click="setPage(1 + 1)" :class="{active: currentPage == 1 + 1}" v-else>{{ 1 + 1 }}</div>
+    <div class="page paginator-btn" @click="setPage(1 + 1)" :class="{active: currentPage == 1 + 1}" v-else :style="{'display': lastPage == 1 ? 'none': 'inherit'}">{{ 1 + 1 }}</div>
     <div class="page paginator-btn desktop-only" @click="setPage(page)" :class="{active: page == currentPage}" v-for="page in renderedPages" :key="`${page}`">{{ page }}</div>
     <div class="page paginator-btn mobile-only" @click="setPage(page)" :class="{active: page == currentPage}" v-for="page in renderedPagesMobile" :key="`${page}-mobile`">{{ page }}</div>
     <div class="dotted paginator-btn inactive" v-if="hasAfterDots">...</div>
-    <div class="page paginator-btn" @click="setPage(lastPage - 1)" :class="{active: currentPage == lastPage - 1 }" v-else>{{ lastPage - 1 }}</div>
-    <div class="page paginator-btn" @click="setPage(lastPage)" :class="{active: currentPage == lastPage}">{{lastPage}}</div>
+    <div class="page paginator-btn" @click="setPage(lastPage - 1)" :class="{active: currentPage == lastPage - 1 }" v-else :style="{'display': lastPage == 1 ? 'none': 'inherit'}">{{ lastPage - 1 }}</div>
+    <div class="page paginator-btn" @click="setPage(lastPage)" :class="{active: currentPage == lastPage}" :style="{'display': lastPage == 1 ? 'none': 'inherit'}">{{lastPage}}</div>
     <div class="next-page paginator-btn active" @click="next">&gt;</div>
   </div>
 </template>
@@ -31,17 +31,21 @@ export default {
     categoryId: {
       type: Number,
       required: true,
+    },
+    price: {
+      type: Array,
+      required: true
     }
   },
   methods: {
     prev() {
-      this.updateProducts(this.categoryId, this.currentPage - 1 || 1)
+      this.updateProducts(this.categoryId, this.currentPage - 1 || 1, {min: this.price[0], max: this.price[1]})
     },
     next() {
-      this.updateProducts(this.categoryId, this.currentPage + 1 > this.lastPage ? this.lastPage : this.currentPage + 1);
+      this.updateProducts(this.categoryId, this.currentPage + 1 > this.lastPage ? this.lastPage : this.currentPage + 1,{min: this.price[0], max: this.price[1]});
     },
     setPage(page) {
-      this.updateProducts(this.categoryId, page);
+      this.updateProducts(this.categoryId, page,{min: this.price[0], max: this.price[1]});
       window.scrollTo(0, 0);
     }
   },
@@ -54,6 +58,7 @@ export default {
       for (let i = firstRendered; i < lastRendered+1; i++) {
         rendered.push(i);
       }
+      
       return rendered;
     },
     renderedPagesMobile() {
@@ -64,6 +69,9 @@ export default {
       for (let i = firstRendered; i < lastRendered+1; i++) {
         rendered.push(i);
       }
+      console.log(
+        rendered
+      );
       return rendered;
     },
     hasBeforeDots() {

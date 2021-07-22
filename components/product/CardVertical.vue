@@ -76,20 +76,39 @@ export default {
     }
   },
   computed: {
-    ...mapState('cart', ['products']),
+    ...mapState('cart', ['products','isToastContent']),
     quantity: {
       get() {
         let storeProduct = this.products.filter(product => product.id == this.productId);
         return storeProduct.length ? storeProduct[0].count : 0;
       },
       set() {
+        const new_obj = {
+          isToast: true,
+          content: this.name
+        }
+        this.setToast({
+          isToastContent: new_obj
+        });
+        const toastTimeOut = setTimeout(function(){
+          this.setToast({
+            isToastContent:{
+                ...new_obj,
+                isToast: false
+              }
+            });
+          
+          clearTimeout(toastTimeOut);
+        }.bind(this), 2000)
+        
         this.setProduct({productId: +this.productId, count: 1});
       }
     },
   },
   methods: {
     ...mapMutations({
-      setProduct: 'cart/setProduct'
+      setProduct: 'cart/setProduct',
+      setToast: 'cart/setToast'
     })
   }
 };

@@ -77,6 +77,38 @@ a {
   justify-content: space-between;
 }
 
+.toast{
+  position: fixed;
+  color: white;
+  bottom: 100px;
+  background-color: rgba(0,0,0,0.7);
+  padding: 10px 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  text-align: center;
+  animation: toast_animation 0.3s;
+}
+
+@keyframes toast_animation {
+  0%{
+    opacity: 0;
+  }
+  25%{
+    opacity: 0.25;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  75%{
+    opacity: 0.75;
+  }
+  100%{
+    bottom: 100px;
+    opacity: 1;
+    display: none;
+  }
+}
 
 .address-container{
   display: flex;

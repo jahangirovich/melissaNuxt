@@ -1,6 +1,10 @@
 export const state = () => {
   return {
-    products: []
+    products: [],
+    isToastContent: {
+      content: "",
+      isToast: false
+    }
   }
 };
 
@@ -21,6 +25,9 @@ export const mutations = {
       if(isDelete) return;
       state.products.push({ id: productId, count })
     }
+  },
+  setToast(state, {isToastContent}){
+    state.isToastContent = { ...isToastContent};
   },
   addProduct(state, { productId }) {
     if (state.products.filter(product => product.id == productId).length) {

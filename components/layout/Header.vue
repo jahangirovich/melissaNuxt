@@ -30,12 +30,22 @@
         </div>
       </div>
     </div>
+    <div class="toast" v-if="isToastContent.isToast">
+       {{ isToastContent.content }} <br>добавлен
+    </div>
   </header>
 </template>
 
 <script>
+import {mapState} from 'vuex';
+
 export default {
-  
+  mounted(){
+    console.log(this.isToastContent);
+  },
+  computed: {
+    ...mapState('cart',['isToastContent'])
+  }
 }
 </script>
 
