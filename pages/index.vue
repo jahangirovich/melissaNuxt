@@ -130,17 +130,17 @@ export default {
       ],
       categories: [
         {
-          categoryId: 1,
+          categoryId: 661625,
           image: "category3.png",
           name: "Лекарственные препараты"
         },
         {
-          categoryId: 2,
+          categoryId: 601216,
           image: "category2.png",
           name: "Красота и уход"
         },
         {
-          categoryId: 3,
+          categoryId: 502311,
           image: "category1.png",
           name: "Для мам и детей"
         }
