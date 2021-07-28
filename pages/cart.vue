@@ -34,7 +34,7 @@
           <nuxt-link to="/catalog" class="continue-shopping">Продолжить покупки</nuxt-link>
           <div class="order-actions">
             <span class="overall-price">{{ 'Итого: ' + Intl.NumberFormat("ru-RU").format(overallPrice) + " ₸" }}</span>
-            <button class="create-order">Оформить заказ</button>
+            <nuxt-link to="/order" ><button class="create-order">Оформить заказ</button></nuxt-link>
           </div>
         </div>
       </div>
