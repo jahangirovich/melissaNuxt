@@ -31,10 +31,10 @@
             </div>
           </div>
           <div class="address-map">
-            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1xrndyqt3rrGqPYgOnmNELK4VnAHRoWwQ" width="640" height="480"></iframe>
+            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1xrndyqt3rrGqPYgOnmNELK4VnAHRoWwQ" width="100%" height="480"></iframe>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
