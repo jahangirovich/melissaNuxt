@@ -31,15 +31,14 @@
             </div>
           </div>
           <div class="address-map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2905.371326861119!2d76.8974696154852!3d43.26459597913646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883695f43c6fcbf%3A0xd6cd7ac6840f70df!2sRayimbek%20Ave%20239%20%D0%93%2C%20Almaty%20050000!5e0!3m2!1sen!2skz!4v1626838283131!5m2!1sen!2skz" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1xrndyqt3rrGqPYgOnmNELK4VnAHRoWwQ" width="640" height="480"></iframe>
           </div>
         </div>
-
+        
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -61,6 +60,9 @@ export default {
     contacts = contacts.contacts;
     console.log(contacts);
     return { contacts };
+  },
+  created(){
+    
   }
 }
 </script>
