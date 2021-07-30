@@ -28,6 +28,7 @@ export default {
     { src: '~/plugins/persisted-state.client.js'},
     { src: '~/plugins/vuelidate.client.js' },
     { src: '~/plugins/datepicker.client.js'},
+    { src: '~/plugins/ymapPlugin.js',  mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -18,7 +18,7 @@
           <nuxt-link to="/about">О компании</nuxt-link>
           <nuxt-link to="/contacts">Контакты</nuxt-link>
           <nuxt-link to="/vacancies">Карьера</nuxt-link>
-          <nuxt-link to="/">Партнеры</nuxt-link>
+          <nuxt-link to="/partners">Партнеры</nuxt-link>
         </div>
       </div>
       <div class="customer-block footer-block">
@@ -28,7 +28,7 @@
           <nuxt-link to="/howto">Как сделать заказ</nuxt-link>
           <nuxt-link to="/questions">Вопросы и ответы</nuxt-link>
           <nuxt-link to="/">Контроль качества</nuxt-link>
-          <nuxt-link to="/">Блог</nuxt-link>
+          <nuxt-link to="/blogs">Блог</nuxt-link>
         </div>
       </div>
       <div class="documents-block footer-block">

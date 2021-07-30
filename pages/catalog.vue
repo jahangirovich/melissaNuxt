@@ -266,10 +266,12 @@ export default {
         min: parseInt(params ? params['min'] : 0),
         max: parseInt(params ? params['max'] : 0)
       }
+      if(params == undefined) return;
 
-      if(params['stock']) queryObj = {...queryObj, available: params['stock']};
+      if(params['stock']) {
+        queryObj = {...queryObj, available: params['stock']};
+      }
       if(params['discount']) queryObj = {...queryObj, discount: params['discount']};
-
       this.paginator.categoryId = catalogId;
 
       this.$router.push({

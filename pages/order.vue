@@ -186,11 +186,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
     .content_block{
         display: flex;
         margin-top: 60px;
         justify-content: space-between;
+
     }
     .another{
         display: flex;
@@ -226,6 +227,9 @@ export default {
         display: flex;
         padding: 13px 0;
         border-bottom: 1px solid #D4D4E1;
+        img{
+            height: 90px;
+        }
     }
     .products_container .products_info{
         padding: 10px;

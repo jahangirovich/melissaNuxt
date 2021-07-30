@@ -64,6 +64,7 @@ export default{
 </script>
 
 <style scoped>
+
     h2{
         font-size: 28px;
         color: #3F414E;

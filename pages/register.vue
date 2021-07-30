@@ -9,6 +9,7 @@
     <label for="phone" id="phone-label" :class="{'has-error': errorPhone}">
       <span>Мобильный телефон</span>
       <span class="error-text" v-if="errorPhone">Проверьте правильность введенного номера</span>
+      <span class="error-text" v-if="error.isError">{{ error.errorData }}</span>
       <input type="text" class="phone_input" id="phone" placeholder="+7 (7xx) xxx-xx-xx"  @blur="errorPhone = false">
     </label>
     <label for="password" id="password-label" :class="{'has-error': errorPassword}">
@@ -35,6 +36,7 @@ export default {
       name: '',
       errorPassword: false,
       errorPhone: false,
+      error: {isError : false, errorData: ""},
       errorName: false
     }
   },
@@ -73,7 +75,13 @@ export default {
         }).then((res) => {
           this.$router.push(`/verify?user_id=${res.user.id}`)
         }).catch((err) => {
-          console.error(err)
+          err = err.response.data
+          if(err.errors){
+            if(err.errors.phone_number) {
+              this.error.isError = true;
+              this.error.errorData = "Номер телефона уже существует"
+            }
+          }
         })
       }
     }
