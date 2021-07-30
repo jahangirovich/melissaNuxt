@@ -22,7 +22,7 @@
         />
       </nuxt-link>
       <div class="search desktop-only">
-        <input type="text" placeholder="Поиск лекарств">
+        <input type="search" placeholder="Поиск лекарств" v-model="searchField" v-on:keydown.enter.prevent='search'>
       </div>
       <div class="phones desktop-only">
         <img src="@/assets/icons/phone.svg" alt="">
@@ -48,6 +48,7 @@ export default {
       cartCount: 3,
       isCatalogsActive: false,
       catalogsTimeout: null,
+      searchField: ""
     }
   },
   computed: {
@@ -72,6 +73,10 @@ export default {
           this.isCatalogsActive = false;
         }
       }
+    },
+    search(e) {
+      e.preventDefault();
+      this.$router.push('/search?target='+this.searchField);
     }
   },
 }
@@ -88,6 +93,9 @@ export default {
   background: #fff;
   margin-bottom: 30px;
   padding: 20px 0;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
 }
 
 .catalog {
