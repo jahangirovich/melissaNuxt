@@ -55,6 +55,8 @@ h1.title {
 }
 
 .cabinet-main {
+  width: 100%;
+  justify-content: flex-start;
   display: flex;
 }
 

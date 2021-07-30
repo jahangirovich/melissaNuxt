@@ -4,7 +4,8 @@ export const state = () => {
     isToastContent: {
       content: "",
       isToast: false
-    }
+    },
+    favoriteProducts: {}
   }
 };
 
@@ -35,6 +36,14 @@ export const mutations = {
       state.products[targetProduct].count = 1;
     } else {
       state.products.push({ id: productId, count: 1 });
+    }
+  },
+  addFavoriteProduct(state, { productId }) {
+    const ar = state.favoriteProducts;
+    if (ar[productId] != undefined) {
+      delete ar[productId];
+    } else {
+      ar[productId] = productId;
     }
   }
 }

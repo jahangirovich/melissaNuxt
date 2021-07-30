@@ -1,54 +1,52 @@
 <template>
-  <div>
+  <div class="products_container">
        <product-card-vertical
-                v-for="(product, index) in products"
-                :key="index"
-                :name="product.full_name"
-                :price="+product.price"
-                :oldPrice="product.oldPrice || null"
-                :discount="product.discount || null"
-                :productId="product.id"
-                :isFavorite="product.isFavorite || null"
-                :image="product.images ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.images)[0]}` : null"
-              />
+            v-for="(product, index) in cartItems"
+            :key="index"
+            :name="product.full_name"
+            :price="+product.price"
+            :oldPrice="product.oldPrice || null"
+            :discount="product.discount || null"
+            :productId="product.id"
+            :isFavorite="product.isFavorite || null"
+            :image="product.image ? `https://melissa.a-lux.dev/storage/${JSON.parse(product.image)[0]}` : null"
+        />
   </div>
 </template>
 
 <script>
+import {mapState, mapMutations} from 'vuex';
+
 export default {
     data() {
         return {
-            products: [
-                {
-                    full_name: "asdas",
-                    price: 123,
-                    oldPrice: 323,
-                    discount: false,
-                    productId: 432,
-                    isFavorite: true,
-                    image: null
-                }
-            ]
+            cartItems: []
         }
     },
-  props: {
-    image: {
-      type: String,
-      required: true,
+    computed:{
+        ...mapState('cart', ['favoriteProducts']),
     },
-    name: {
-      type: String,
-      required: true,
+    async beforeMount() {
+        const products = Object.keys(this.favoriteProducts);
+        if (!products.length) return;
+        let requestString = '/cart/multiple?';
+        products.forEach(product => {
+            requestString += 'id[]=' + this.favoriteProducts[product] + '&';
+        });
+        this.$axios.$get(requestString).then(data => {
+            this.cartItems = data.products;
+        }).catch(err => {
+        });
     },
-    categoryId: {
-      type: Number,
-      required: true,
-    },
-  },
 }
 </script>
 
 <style lang="scss" scoped>
+.products_container{
+    padding-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
 .category-card {
   display: block;
   position: relative;

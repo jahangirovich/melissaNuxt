@@ -27,7 +27,7 @@
     <div v-if="discount" class="discount">
       {{ discount }}
     </div>
-    <div class="favorite" @click="favorite = !favorite">
+    <div class="favorite" @click="favoriteClicked">
       <transition name="favorite">
         <img key="favorite" v-if="favorite" src="@/assets/icons/favorite-fill.svg" alt="" />
         <img key="favorite-filled" v-else src="@/assets/icons/favorite.svg" alt="" />
@@ -42,7 +42,7 @@ import {mapMutations, mapState} from 'vuex';
 export default {
   data() {
     return {
-      favorite: this.isFavorite
+      favorite: false
     };
   },
   props: {
@@ -76,7 +76,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('cart', ['products','isToastContent']),
+    ...mapState('cart', ['products','isToastContent','favoriteProducts']),
     quantity: {
       get() {
         let storeProduct = this.products.filter(product => product.id == this.productId);
@@ -105,11 +105,19 @@ export default {
       }
     },
   },
+  created(){
+    this.favorite = this.favoriteProducts[this.productId];
+  },
   methods: {
     ...mapMutations({
       setProduct: 'cart/setProduct',
-      setToast: 'cart/setToast'
-    })
+      setToast: 'cart/setToast',
+      addProduct: 'cart/addFavoriteProduct'
+    }),
+    favoriteClicked(){
+      this.addProduct({productId: this.productId})
+      this.favorite = this.favoriteProducts[this.productId] ? true: false
+    }
   }
 };
 </script>
