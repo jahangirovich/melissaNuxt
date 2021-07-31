@@ -277,12 +277,13 @@ export default {
       this.$router.push({
         query: queryObj
       });
-      if(!catalogId && params == undefined) {
+      if(catalogId == 0) {
         strUrl = `welcome?page=${page}`;
       }
       else{
         strUrl = `filter/${catalogId}/price?max=${params.max}&min=${params.min}&page=${page}${params['stock'] ? `&available=${params['stock']}` : ""}${params['discount'] ? `&discount=${params['discount']}`: ""}`
       } 
+      console.log(strUrl);
       this.$axios.$get(strUrl).then(res => {
           this.products = res.items.data;
           this.paginator.currentPage = res.items.current_page;

@@ -12,6 +12,12 @@
       <span class="error-text" v-if="error.isError">{{ error.errorData }}</span>
       <input type="text" class="phone_input" id="phone" placeholder="+7 (7xx) xxx-xx-xx"  @blur="errorPhone = false">
     </label>
+    <label for="phone" id="phone-label" :class="{'has-error': errorEmail}">
+      <span>Электронный адрес</span>
+      <span class="error-text" v-if="errorEmail">Проверьте правильность введенной почты</span>
+      <span class="error-text">{{ error.errorData }}</span>
+      <input type="email" class="phone_input" id="email" placeholder="__@" v-model="email"  @blur="errorPhone = false">
+    </label>
     <label for="password" id="password-label" :class="{'has-error': errorPassword}">
       <span>Пароль</span>
       <span class="error-text" v-if="errorPassword">Пароль должен быть больше 8 символов, меньше 40</span>
@@ -34,8 +40,10 @@ export default {
       phone: '',
       password: '',
       name: '',
+      email: '',
       errorPassword: false,
       errorPhone: false,
+      errorEmail: false,
       error: {isError : false, errorData: ""},
       errorName: false
     }
@@ -59,20 +67,24 @@ export default {
   },
   methods: {
     validate() {
+      const email = /^\S+@\S+$/;
       const phone = /^\+?77([0124567][0-8]\d{7})$/;
       const password = /[\S\w\d]{8,40}/;
       this.name.trim() !== '' ? this.errorName = false : this.errorName = true;
       phone.test(this.phone) ? this.errorPhone = false : this.errorPhone = true;
       password.test(this.password) ? this.errorPassword = false : this.errorPassword = true;
-      return (phone.test(this.phone) && password.test(this.password) && this.name.trim() !== '')
+      email.test(this.email) ? this.errorEmail = false : this.errorEmail = true;
+      return (phone.test(this.phone) && password.test(this.password) && this.name.trim() !== '' && email.test(this.email))
     },
     async auth() {
       if (this.validate()) {
         this.$axios.$post('/register', {
           name: this.name,
           phone_number: this.phone,
+          email: this.email,
           password: this.password,
         }).then((res) => {
+          console.log(res);
           this.$router.push(`/verify?user_id=${res.user.id}`)
         }).catch((err) => {
           err = err.response.data
