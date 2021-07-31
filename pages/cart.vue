@@ -16,7 +16,7 @@
           </div>
           <div class="table-data-line" v-for="(cartItem, index) in cartItems" :key="index">
             <img v-if="cartItem.images" class="image" :src="`https://melissa.a-lux.dev/storage/${JSON.parse(cartItem.images)}`">
-            <img v-else class="product-image" src="~/assets/img/product-placeholder.png" :alt="name" width="100px">
+            <img v-else class="product-image" src="~/assets/img/product-placeholder.png" :alt="'name'" width="100px">
             <nuxt-link class="title" :to="`/product/${cartItem.id}`">{{ cartItem.full_name }}</nuxt-link>
             <div class="count centered">
               <div class="quantity">

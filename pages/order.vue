@@ -49,27 +49,27 @@
                             <div class="inner_inputs">
                                 <p class="inner_inputs_child">
                                     <label for="">Имя</label>
-                                    <input type="text">
+                                    <input type="text" :value="userData.user.name">
                                 </p>
                                 <p class="inner_inputs_child">
                                     <label for="">Телефон</label>
-                                    <input type="text">
+                                    <input type="text" :value="userData.user.phone_number">
                                 </p>
                                 <p class="inner_inputs_child">
                                     <label for="">Email</label>
-                                    <input type="text">
+                                    <input type="text" :value="userData.user.email">
                                 </p>
                                 <p class="inner_inputs_child">
                                     <label for="">Комментарий к заказу:</label>
                                     <textarea></textarea>
                                 </p>
                                 <p class="checkbox_container">
-                                    <input type="checkbox" id="checkboxer">
+                                    <input type="checkbox" id="checkboxer" v-model="ownTake">
                                     <label for="checkboxer">Я получатель</label>
                                 </p>
                             </div>
                         </div>
-                        <div class="your_data">
+                        <div class="your_data" v-if="!ownTake">
                             <h4>Данные получателя</h4>
                             <div class="inner_inputs">
                                 <p class="inner_inputs_child">
@@ -91,74 +91,44 @@
                             </div>
                         </div>
                         <div class="inner_inputs another">
-                            <div class="current">
-                                <div>
-                                    <img src="@/assets/img/visa.svg" alt="">
+                            <div v-for="(card,i) in cards" :key="i" @click="changeCard(i)">
+                                <div :class="chooseCards == i ? 'active_card' : ''" >
+                                    <img :src="card.img" alt="">
                                 </div>
-                                <span>Карты Visa,<br>
-MasterCard</span>
-                            </div>
-                            <div>
-                                <div>
-                                    <img src="@/assets/img/money.svg" alt="">
-                                </div>
-                                <span>Наличными<br>
-курьеру</span>
+                                <span>{{ card.title }}</span>
                             </div>
                         </div>
                         <button>Оформить заказ</button>
                     </form>
                 </div>
                 <div class="right_side">
-                    <h4>Ваш заказ</h4>
-                    <div class="products">
-                        <div class="products_container">
-                            <img src="@/assets/img/category2.png" alt="" width="87px" style="object-fit: cover">
-                            <div class="products_info">
-                                <span>Фервекс для взрослых <br>
- (с витамином С) саше №8</span>
-                                <div>
-                                    <span>1 шт. </span>
-                                    <span>1220 ₸</span>
+                    <div>
+                        <h4>Ваш заказ</h4>
+                        <div class="products">
+                            <div class="products_container" v-for="(obj, i) in cartItems" :key="i">
+                                <img v-if="obj.images" :src="obj.images" alt="" width="87px" style="object-fit: cover">
+                                <img v-else src='@/assets/img/product-placeholder.png' alt="" width="87px" style="object-fit: cover">
+
+                                <div class="products_info">
+                                    <span>{{ obj.full_name }}</span>
+                                    <div>
+                                        <span>{{ productsCounts[obj.id] }} шт. </span>
+                                        <span>{{ obj.price }} ₸</span>
+                                    </div>
                                 </div>
+                            </div> 
+                        </div>
+                        <div class="prices">
+                        
+                            <div class="delivery">
+                                <span>Доставка</span>
+                                <span>300 ₸ </span>
                             </div>
                         </div>
-                        <div class="products_container">
-                            <img src="@/assets/img/category2.png" alt="" width="87px" style="object-fit: cover">
-                            <div class="products_info">
-                                <span>Фервекс для взрослых <br>
- (с витамином С) саше №8</span>
-                                <div>
-                                    <span>1 шт. </span>
-                                    <span>1220 ₸</span>
-                                </div>
-                            </div>
+                        <div class="prices_total products_container">
+                            <span>Общая сумма</span>
+                            <span>{{ overallPrice + 300 }} ₸</span>
                         </div>
-                        <div class="products_container">
-                            <img src="@/assets/img/category2.png" alt="" width="87px" style="object-fit: cover">
-                            <div class="products_info">
-                                <span>Фервекс для взрослых <br>
- (с витамином С) саше №8</span>
-                                <div>
-                                    <span>1 шт. </span>
-                                    <span>1220 ₸</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="prices">
-                        <div class="sum">
-                            <span>Сумма</span>
-                            <span>29000 ₸</span>
-                        </div>
-                        <div class="delivery">
-                            <span>Доставка</span>
-                            <span>300 ₸ </span>
-                        </div>
-                    </div>
-                    <div class="prices_total products_container">
-                        <span>Общая сумма</span>
-                        <span>29300 ₸</span>
                     </div>
                 </div>
             </div>
@@ -167,6 +137,7 @@ MasterCard</span>
 </template>
 
 <script>
+import {mapState} from 'vuex';
 
 export default {
     data() {
@@ -180,8 +151,66 @@ export default {
                     title: 'Оформление заказа',
                     url: '/order'
                 }
-            ]
+            ],
+            cartItems: [],
+            chooseCards: 0,
+            cards: [
+                {
+                    img: require('../assets/img/visa.svg'),
+                    title: 'Карты Visa,Mastercard'
+                },
+                {
+                    img: require('../assets/img/money.svg'),
+                    title: 'Наличными'
+                }
+            ],
+            ownTake: false,
+            userData: {}
         }
+    },
+    computed: {
+        ...mapState('cart', ['products']),
+        productsCounts() {
+            let counts = {};
+            this.products.forEach(product => {
+                counts[product.id] = product.count;
+            });
+            console.log(this.products);
+            return counts;
+        },
+        overallPrice() {
+            let price = 0;
+            this.cartItems.forEach(cartItem => {
+                price += this.productsCounts[cartItem.id] * +cartItem.price;
+            });
+            return price;
+        }
+    },
+    methods: {
+        changeCard(index){
+            this.chooseCards = index
+        }
+    },
+    async beforeMount() {
+        if (!this.products.length) return;
+        let requestString = '/cart/multiple?';
+        this.products.forEach(product => {
+            requestString += 'id[]=' + product.id + '&';
+        });
+        this.$axios.$get(requestString).then(data => {
+            this.cartItems = data.products;
+        }).catch(err => {
+            console.error(err);
+        });
+        this.$axios.$get('/order-create').then(res => {
+            console.log(res);
+        })
+    },
+    async asyncData({ $axios, $cookies }) {
+        $axios.setHeader('Authorization', `Bearer ${$cookies.get('auth-token')}`);
+        const userData = await $axios.$get('/profile');
+        console.log(userData);
+        return { userData }
     }
 }
 </script>
@@ -192,6 +221,9 @@ export default {
         margin-top: 60px;
         justify-content: space-between;
 
+    }
+    .active_card{
+        background-color: #05054B;
     }
     .another{
         display: flex;
@@ -213,12 +245,15 @@ export default {
     }
 
     .right_side{
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-        padding: 24px;
         width: 28%;
-        overflow: hidden;
-        border-radius: 10px;
-        height: 600px;
+        &>div{
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+            padding: 24px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            height: auto;
+        }
     }
     .right_side .products{
         margin-top: 14px;
@@ -334,5 +369,23 @@ export default {
     }
     .condition p{
         margin-top: 10px;
+    }
+    @media screen and(max-width: 990px) and(max-width: 768px) {
+        .content_block{
+            flex-direction: column-reverse;
+        }
+        .content h2{
+            margin-top: 20px;
+        }
+        .right_side{
+            width: 100%;
+            box-sizing: border-box;
+            &>div{
+                box-sizing: border-box;
+            }
+        }
+        .forms{
+            width: 100%;
+        }
     }
 </style>
